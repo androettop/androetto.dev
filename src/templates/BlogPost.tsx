@@ -1,14 +1,50 @@
 import * as React from "react"
 import { Link, graphql } from "gatsby"
 
-import Bio from "../components/bio"
 import Layout from "../components/layout"
-import Seo from "../components/seo"
+import Seo from "../components/Seo"
+
+interface BlogPostTemplateProps {
+  data: {
+    previous: {
+      fields: {
+        slug: string
+      }
+      frontmatter: {
+        title: string
+      }
+    }
+    next: {
+      fields: {
+        slug: string
+      }
+      frontmatter: {
+        title: string
+      }
+    }
+    site: {
+      siteMetadata: {
+        title: string
+      }
+    }
+    markdownRemark: {
+      id: string
+      excerpt: string
+      html: string
+      frontmatter: {
+        title: string
+        date: string
+        description: string
+      }
+    }
+  }
+  location: Location
+}
 
 const BlogPostTemplate = ({
   data: { previous, next, site, markdownRemark: post },
   location,
-}) => {
+}: BlogPostTemplateProps) => {
   const siteTitle = site.siteMetadata?.title || `Title`
 
   return (
@@ -26,10 +62,6 @@ const BlogPostTemplate = ({
           dangerouslySetInnerHTML={{ __html: post.html }}
           itemProp="articleBody"
         />
-        <hr />
-        <footer>
-          <Bio />
-        </footer>
       </article>
       <nav className="blog-post-nav">
         <ul
