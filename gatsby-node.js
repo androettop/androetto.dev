@@ -1,9 +1,3 @@
-/**
- * Implement Gatsby's Node APIs in this file.
- *
- * See: https://www.gatsbyjs.com/docs/reference/config-files/gatsby-node/
- */
-
 const path = require(`path`)
 const { createFilePath } = require(`gatsby-source-filesystem`)
 
@@ -95,16 +89,11 @@ exports.createSchemaCustomization = ({ actions }) => {
     type SiteSiteMetadata {
       author: Author
       siteUrl: String
-      social: Social
     }
 
     type Author {
       name: String
       summary: String
-    }
-
-    type Social {
-      twitter: String
     }
 
     type MarkdownRemark implements Node {

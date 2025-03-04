@@ -43,6 +43,7 @@ const BlogIndex = ({ data, location }) => {
                     </Link>
                   </h2>
                   <small>{post.frontmatter.date}</small>
+                  <img src={post.frontmatter.thumbnail.childImageSharp.gatsbyImageData.images.fallback.src} alt={title} />
                 </header>
                 <section>
                   <p
@@ -68,7 +69,7 @@ export default BlogIndex
  *
  * See: https://www.gatsbyjs.com/docs/reference/built-in-components/gatsby-head/
  */
-export const Head = () => <Seo title="All posts" />
+export const Head = () => <Seo />
 
 export const pageQuery = graphql`
   {
@@ -87,6 +88,16 @@ export const pageQuery = graphql`
           date(formatString: "MMMM DD, YYYY")
           title
           description
+          thumbnail {
+            childImageSharp {
+              gatsbyImageData(
+                layout: CONSTRAINED
+                width: 200
+                height: 200
+                placeholder: BLURRED
+              )
+            }
+          }
         }
       }
     }
