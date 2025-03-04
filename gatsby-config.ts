@@ -1,15 +1,14 @@
-/**
- * @type {import('gatsby').GatsbyConfig}
- */
-module.exports = {
+import type { GatsbyConfig } from "gatsby"
+
+const config: GatsbyConfig = {
   siteMetadata: {
     title: `Pablo Androetto | Software Engineer`,
     author: {
       name: `Pablo Androetto`,
-      summary: `Software Developer with over 10 years of experience`
+      summary: `Software Developer with over 10 years of experience`,
     },
     description: `Hi! I'm Pablo Androetto, a Software Engineer with over 10 years of experience building software.`,
-    siteUrl: `https://androetto.dev/`
+    siteUrl: `https://androetto.dev/`,
   },
   plugins: [
     `gatsby-plugin-image`,
@@ -111,3 +110,5 @@ module.exports = {
     },
   ],
 }
+
+export default config
