@@ -1,5 +1,7 @@
 import { Link } from "gatsby"
 import * as React from "react"
+import * as styles from "./Layout.module.css"
+import Navbar from "../Navbar/Navbar"
 
 interface LayoutProps {
   location: Location
@@ -10,25 +12,10 @@ interface LayoutProps {
 const Layout = ({ location, title, children }: LayoutProps) => {
   const rootPath = `/`
   const isRootPath = location.pathname === rootPath
-  let header
-
-  if (isRootPath) {
-    header = (
-      <h1 className="main-heading">
-        <Link to="/">{title}</Link>
-      </h1>
-    )
-  } else {
-    header = (
-      <Link className="header-link-home" to="/">
-        home
-      </Link>
-    )
-  }
 
   return (
-    <div className="global-wrapper" data-is-root-path={isRootPath}>
-      <header className="global-header">{header}</header>
+    <div className={styles.wrapper} data-is-root-path={isRootPath}>
+      <Navbar location={location} />
       <main>{children}</main>
     </div>
   )
