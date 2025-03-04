@@ -9,7 +9,8 @@ interface NavbarProps {
 
 const items = [{
   name: "Home",
-  link: "/"
+  link: "/",
+  exact: true
 }, {
   name: "Experience",
   link: "#experience"
@@ -28,7 +29,7 @@ const Navbar = ({ location }: NavbarProps) => {
         {items.map(item => (
           <li key={item.name}>
             <Link to={item.link} className={classNames({
-              [styles.active]: item.link.startsWith("/") && location.pathname === item.link
+              [styles.active]: item.link.startsWith("/") && (item.exact ? location.pathname === item.link : location.pathname.startsWith(item.link))
             })}>{item.name}</Link>
           </li>
         ))}
