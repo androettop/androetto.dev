@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@fontsource/jetbrains-mono": "^5.2.5",
+    "classnames": "^2.5.1",
     "gatsby": "^5.14.1",
     "gatsby-plugin-feed": "^5.14.0",
     "gatsby-plugin-image": "^3.14.0",

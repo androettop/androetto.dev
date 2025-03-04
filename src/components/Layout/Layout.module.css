@@ -1,0 +1,7 @@
+.wrapper {
+    background-color: var(--color-dark);
+    background-image: url('../../images/bg-light.svg'),  url('../../images/noise.jpg');
+    background-repeat: no-repeat, repeat;
+    background-position: top center, center center;
+    min-height: 100%;
+}
