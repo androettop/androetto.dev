@@ -16,8 +16,7 @@ jobs:
 
       - name: Update all submodules to latest commit
         run: |
-          git submodule update --init --recursive
-          git submodule update --remote --merge --force
+          git submodule foreach --recursive 'git fetch && git reset --hard origin/$(git rev-parse --abbrev-ref HEAD)'
 
       - name: Commit and push changes
         run: |
