@@ -27,6 +27,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "Update submodules to latest commit"
+            git commit -m "Update blog content"
             git push origin HEAD
           fi
