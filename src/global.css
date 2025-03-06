@@ -10,14 +10,23 @@ body,
 }
 
 :root {
+  /* All the palette is based on the primary HSL color */
+  --color-hue: 287;
+  --color-saturation: 100%;
+  --color-lightness: 50%;
+
+  --color-base-primary: var(--color-hue), var(--color-saturation), var(--color-lightness);
+
+  /* Palette */
   --color-white: #fff;
-  --color-dark: #17131b;
-  --color-light: #c2bcc9;
-  --color-primary: #a652da;
-  --color-secondary: #4c3c60;
+  --color-dark: hsl(var(--color-hue), calc(var(--color-lightness) * 0.17), calc(var(--color-lightness) * 0.18));
+  --color-light: hsl(var(--color-hue), calc(var(--color-lightness) * 0.11), calc(var(--color-lightness) * 1.52));
+  --color-primary: hsl(var(--color-base-primary));
+  --color-secondary: hsl(var(--color-hue), calc(var(--color-lightness) * 0.23), calc(var(--color-saturation) * 0.62))
 }
 
 body {
   font-family: "JetBrains Mono", monospace;
   color: white;
+  background-color: var(--color-dark);
 }

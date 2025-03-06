@@ -1,7 +1,14 @@
 .wrapper {
-    background-color: var(--color-dark);
-    background-image: url('../../images/bg-light.svg'),  url('../../images/noise.jpg');
-    background-repeat: no-repeat, repeat;
-    background-position: top center, center center;
+    background: radial-gradient(
+        ellipse at top,
+        hsla(var(--color-base-primary), 0.22) 0%,
+        hsla(var(--color-base-primary), 0.06) 30%,
+        hsla(var(--color-base-primary), 0.01) 50%,
+        hsla(var(--color-base-primary), 0) 60%
+      ),  url('../../images/noise.jpg'), var(--color-dark);
+    background-repeat: no-repeat, repeat, repeat;
+    background-position: top center, center center, center;
+    background-size: 1440px 280px, auto, auto;
     min-height: 100%;
+    background-blend-mode: normal, luminosity, normal;
 }
