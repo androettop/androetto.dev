@@ -1,4 +1,5 @@
 // custom typefaces
+import "@fontsource/jetbrains-mono/600.css"
 import "@fontsource/jetbrains-mono/400.css"
 import "@fontsource/jetbrains-mono/200.css"
 // normalize CSS across browsers

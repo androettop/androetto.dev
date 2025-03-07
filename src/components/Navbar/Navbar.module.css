@@ -23,9 +23,17 @@
   font-weight: 200;
 }
 
+.navbar li a:hover,
+.navbar li a:focus,
+.navbar li a:active {
+  opacity: 0.8;
+}
+
+.navbar li a:hover,
+.navbar li a:focus,
+.navbar li a:active,
 .navbar li a.active {
   text-decoration: underline;
   text-decoration-color: var(--color-primary);
   text-underline-offset: 3px;
 }
-
