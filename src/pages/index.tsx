@@ -3,6 +3,7 @@ import { Link, graphql } from "gatsby"
 
 import Seo from "../components/Seo/Seo"
 import Layout from "../components/Layout/Layout"
+import Bio from "../components/Bio/Bio"
 
 interface BlogIndexProps {
   data: {
@@ -57,6 +58,7 @@ const BlogIndex = ({ data, location }: BlogIndexProps) => {
 
   return (
     <Layout location={location} title={siteTitle}>
+      <Bio />
       <ol style={{ listStyle: `none` }}>
         {posts.map(post => {
           const title = post.frontmatter.title || post.fields.slug

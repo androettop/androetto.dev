@@ -11,9 +11,9 @@ body,
 
 :root {
   /* All the palette is based on the primary HSL color */
-  --color-hue: 287;
+  --color-hue: 270;
   --color-saturation: 100%;
-  --color-lightness: 50%;
+  --color-lightness: 60%;
 
   --color-base-primary: var(--color-hue), var(--color-saturation), var(--color-lightness);
 
