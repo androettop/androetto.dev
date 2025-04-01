@@ -19,10 +19,10 @@ body,
 
   /* Palette */
   --color-white: #fff;
-  --color-dark: hsl(var(--color-hue), calc(var(--color-lightness) * 0.17), calc(var(--color-lightness) * 0.18));
-  --color-light: hsl(var(--color-hue), calc(var(--color-lightness) * 0.11), calc(var(--color-lightness) * 1.52));
+  --color-dark: hsl(var(--color-hue), calc(var(--color-saturation) * 0.17), calc(var(--color-lightness) * 0.18));
+  --color-light: hsl(var(--color-hue), calc(var(--color-saturation) * 0.11), calc(var(--color-lightness) * 1.26));
   --color-primary: hsl(var(--color-base-primary));
-  --color-secondary: hsl(var(--color-hue), calc(var(--color-lightness) * 0.23), calc(var(--color-saturation) * 0.62))
+  --color-secondary: hsl(var(--color-hue), calc(var(--color-saturation) * 0.23), calc(var(--color-lightness) * 0.62))
 }
 
 body {

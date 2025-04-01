@@ -4,6 +4,7 @@ import { Link, graphql } from "gatsby"
 import Seo from "../components/Seo/Seo"
 import Layout from "../components/Layout/Layout"
 import Bio from "../components/Bio/Bio"
+import AboutMe from "../components/AboutMe/AboutMe"
 
 interface BlogIndexProps {
   data: {
@@ -59,6 +60,7 @@ const BlogIndex = ({ data, location }: BlogIndexProps) => {
   return (
     <Layout location={location} title={siteTitle}>
       <Bio />
+      <AboutMe />
       <ol style={{ listStyle: `none` }}>
         {posts.map(post => {
           const title = post.frontmatter.title || post.fields.slug
@@ -77,7 +79,13 @@ const BlogIndex = ({ data, location }: BlogIndexProps) => {
                     </Link>
                   </h2>
                   <small>{post.frontmatter.date}</small>
-                  <img src={post.frontmatter.thumbnail.childImageSharp.gatsbyImageData.images.fallback.src} alt={title} />
+                  <img
+                    src={
+                      post.frontmatter.thumbnail.childImageSharp.gatsbyImageData
+                        .images.fallback.src
+                    }
+                    alt={title}
+                  />
                 </header>
                 <section>
                   <p

@@ -2,6 +2,7 @@ import { Link } from "gatsby"
 import * as React from "react"
 import * as styles from "./Layout.module.css"
 import Navbar from "../Navbar/Navbar"
+import Container from "../Container/Container"
 
 interface LayoutProps {
   location: Location
@@ -15,8 +16,10 @@ const Layout = ({ location, title, children }: LayoutProps) => {
 
   return (
     <div className={styles.wrapper} data-is-root-path={isRootPath}>
-      <Navbar location={location} />
-      <main>{children}</main>
+      <Container>
+        <Navbar location={location} />
+        <main>{children}</main>
+      </Container>
     </div>
   )
 }
