@@ -5,7 +5,7 @@
 }
 .link:hover,
 .link:focus,
-link:active {
+.link:active {
   opacity: 0.8;
 }
 
