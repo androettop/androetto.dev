@@ -18,7 +18,7 @@ const Bio = () => {
         />
       </div>
       <h1 className={styles["bio__name"]}>Pablo Androetto</h1>
-      <Link to="mailto:pablo@androetto.dev">pablo@androett.dev</Link>
+      <Link to="mailto:pablo@androetto.dev">pablo@androetto.dev</Link>
       <div className={styles["bio__profiles"]}>
         <Link to="https://github.com/androettop">GitHub</Link>
         <Link to="https://linkedin.com/in/androettop">LinkedIn</Link>
