@@ -1,26 +1,19 @@
 import * as React from "react"
 import * as styles from "./Navbar.module.css"
 import { Link } from "gatsby"
-import classNames from "classnames";
+import classNames from "classnames"
 
 interface NavbarProps {
   location: Location
 }
 
-const items = [{
-  name: "Home",
-  link: "/",
-  exact: true
-}, {
-  name: "Experience",
-  link: "#experience"
-}, {
-  name: "Blog",
-  link: "/blog"
-}, {
-  name: "Projects",
-  link: "#projects"
-}];
+const items = [
+  {
+    name: "Home",
+    link: "/",
+    exact: true,
+  },
+]
 
 const Navbar = ({ location }: NavbarProps) => {
   return (
@@ -28,9 +21,18 @@ const Navbar = ({ location }: NavbarProps) => {
       <ul>
         {items.map(item => (
           <li key={item.name}>
-            <Link to={item.link} className={classNames({
-              [styles.active]: item.link.startsWith("/") && (item.exact ? location.pathname === item.link : location.pathname.startsWith(item.link))
-            })}>{item.name}</Link>
+            <Link
+              to={item.link}
+              className={classNames({
+                [styles.active]:
+                  item.link.startsWith("/") &&
+                  (item.exact
+                    ? location.pathname === item.link
+                    : location.pathname.startsWith(item.link)),
+              })}
+            >
+              {item.name}
+            </Link>
           </li>
         ))}
       </ul>
