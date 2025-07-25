@@ -8,7 +8,11 @@ interface LinkProps {
 }
 
 const Link = ({ to, children }: LinkProps) => {
-  return <GastbyLink className={styles.link} to={to}>{children}</GastbyLink>
+  return (
+    <GastbyLink className={styles.link} to={to}>
+      {children}
+    </GastbyLink>
+  )
 }
 
 export default Link
