@@ -1,6 +1,5 @@
 import * as React from "react"
 import * as styles from "./AboutMe.module.css"
-import Link from "../Link/Link"
 
 const AboutMe = () => {
   return (
@@ -23,9 +22,8 @@ const AboutMe = () => {
       </p>
       <p>
         On this website, I share my experiences, projects, and technical
-        explorations. If you're curious about what I do, check out my{" "}
-        <Link to="/blog">blog</Link>, where I document my work, insights,
-        experiments, and beyond.
+        explorations. Feel free to reach out if you're curious about what I do
+        or want to connect!
       </p>
     </div>
   )
