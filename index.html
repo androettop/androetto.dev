@@ -1,0 +1,790 @@
+
+<!doctype html>
+<html lang="en">
+<head><script>(function(){
+  function makeStore(){
+    var data = {};
+    var api = {
+      getItem: function(k){ return Object.prototype.hasOwnProperty.call(data, k) ? data[k] : null; },
+      setItem: function(k, v){ data[k] = String(v); },
+      removeItem: function(k){ delete data[k]; },
+      clear: function(){ data = {}; },
+      key: function(i){ return Object.keys(data)[i] || null; }
+    };
+    Object.defineProperty(api, 'length', { get: function(){ return Object.keys(data).length; } });
+    return api;
+  }
+  function tryShim(name){
+    var works = false;
+    try { works = !!window[name] && typeof window[name].getItem === 'function'; void window[name].length; }
+    catch (_) { works = false; }
+    if (works) return;
+    try { Object.defineProperty(window, name, { configurable: true, value: makeStore() }); }
+    catch (_) { try { window[name] = makeStore(); } catch (__) {} }
+  }
+  tryShim('localStorage');
+  tryShim('sessionStorage');
+})();</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pablo Androetto — androetto.dev</title>
+<style>
+  :root {
+    --bg:      oklch(14% 0.018 250);
+    --surface: oklch(18% 0.016 250);
+    --surface2: oklch(22% 0.014 250);
+    --fg:      oklch(92% 0.008 250);
+    --muted:   oklch(58% 0.012 250);
+    --border:  oklch(28% 0.016 250);
+    --accent:  oklch(62% 0.22 295);
+    --accent-dim: oklch(62% 0.22 295 / 0.15);
+    --green:   oklch(65% 0.16 145);
+    --yellow:  oklch(75% 0.14 80);
+
+    --font-display: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', system-ui, sans-serif;
+    --font-body:    -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', system-ui, sans-serif;
+    --font-mono:    'JetBrains Mono', 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.02em; }
+  code, .mono { font-family: var(--font-mono); font-size: 0.85em; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+  .section { padding: 80px 0; border-bottom: 1px solid var(--border); }
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 32px;
+  }
+
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: oklch(14% 0.018 250 / 0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 52px;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+  .nav-logo { font-family: var(--font-mono); font-size: 13px; font-weight: 600; color: var(--fg); letter-spacing: -0.01em; }
+  .nav-logo span { color: var(--accent); }
+  .nav-links { display: flex; gap: 24px; list-style: none; align-items: center; }
+  .nav-links a { font-size: 13px; color: var(--muted); transition: color 0.15s; }
+  .nav-links a:hover { color: var(--fg); text-decoration: none; }
+  .lang-toggle {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 4px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .lang-toggle:hover { color: var(--fg); border-color: var(--accent); }
+
+  #hero { padding: 80px 0 72px; border-bottom: 1px solid var(--border); }
+  .hero-grid { display: grid; grid-template-columns: 1fr 280px; gap: 64px; align-items: center; }
+  .hero-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 20px;
+  }
+  .hero-name { font-size: clamp(36px, 5vw, 58px); font-weight: 700; line-height: 1.05; letter-spacing: -0.03em; margin-bottom: 16px; }
+  .hero-title { font-size: 18px; color: var(--muted); margin-bottom: 24px; font-weight: 400; }
+  .hero-desc { font-size: 15px; color: var(--muted); max-width: 540px; line-height: 1.65; margin-bottom: 32px; }
+  .hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: var(--font-mono); font-size: 12px; font-weight: 500;
+    padding: 9px 18px; border-radius: 3px; border: 1px solid transparent;
+    cursor: pointer; transition: all 0.15s; text-decoration: none;
+  }
+  .btn-primary { background: var(--accent); color: oklch(100% 0 0); border-color: var(--accent); }
+  .btn-primary:hover { opacity: 0.88; text-decoration: none; }
+  .btn-secondary { background: transparent; color: var(--fg); border-color: var(--border); }
+  .btn-secondary:hover { border-color: var(--muted); text-decoration: none; }
+  .hero-photo-col { display: flex; justify-content: center; }
+  .hero-avatar { width: 220px; height: 220px; border-radius: 4px; object-fit: cover; border: 1px solid var(--border); background: var(--surface); }
+  .hero-avatar-placeholder {
+    width: 220px; height: 220px; border-radius: 4px; border: 1px solid var(--border); background: var(--surface);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-size: 48px; font-weight: 700; color: var(--accent); letter-spacing: -0.02em;
+  }
+  .hero-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .hero-meta a { font-family: var(--font-mono); font-size: 11px; color: var(--muted); display: flex; align-items: center; gap: 4px; transition: color 0.15s; }
+  .hero-meta a:hover { color: var(--accent); text-decoration: none; }
+
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
+  .about-text p { color: var(--muted); line-height: 1.7; margin-bottom: 16px; }
+  .about-text p:last-child { margin-bottom: 0; }
+  .about-text strong { color: var(--fg); }
+  .stat-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+    background: var(--border); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; align-self: start;
+  }
+  .stat-cell { background: var(--surface); padding: 20px; }
+  .stat-num { font-family: var(--font-mono); font-size: 28px; font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums; letter-spacing: -0.02em; line-height: 1; margin-bottom: 6px; }
+  .stat-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; font-family: var(--font-mono); }
+
+  .exp-list { display: flex; flex-direction: column; }
+  .exp-item { display: grid; grid-template-columns: 160px 1fr; gap: 32px; padding: 28px 0; border-bottom: 1px solid var(--border); }
+  .exp-item:last-child { border-bottom: none; }
+  .exp-meta { padding-top: 2px; }
+  .exp-period { font-family: var(--font-mono); font-size: 11px; color: var(--muted); line-height: 1.5; margin-bottom: 8px; }
+  .exp-duration { display: inline-block; font-family: var(--font-mono); font-size: 10px; color: var(--accent); background: var(--accent-dim); padding: 2px 7px; border-radius: 2px; }
+  .exp-company { font-weight: 600; font-size: 15px; margin-bottom: 2px; }
+  .exp-role { font-size: 13px; color: var(--muted); margin-bottom: 12px; font-family: var(--font-mono); }
+  .exp-desc { font-size: 14px; color: var(--muted); line-height: 1.65; margin-bottom: 12px; }
+  .exp-desc strong { color: var(--fg); }
+  .exp-bullets { list-style: none; padding: 0; margin-bottom: 12px; }
+  .exp-bullets li { font-size: 13px; color: var(--muted); padding: 3px 0 3px 16px; position: relative; }
+  .exp-bullets li::before { content: '—'; position: absolute; left: 0; color: var(--border); }
+  .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .tag { font-family: var(--font-mono); font-size: 10px; color: var(--muted); background: var(--surface2); border: 1px solid var(--border); padding: 2px 8px; border-radius: 2px; white-space: nowrap; }
+
+  .carousel-wrapper { position: relative; }
+  .carousel-track-outer { overflow: hidden; border: 1px solid var(--border); border-radius: 4px; }
+  .carousel-track { display: flex; transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1); }
+  .project-card { flex: 0 0 100%; display: grid; grid-template-columns: 1fr 340px; min-height: 320px; }
+  .project-content { padding: 36px 40px; border-right: 1px solid var(--border); display: flex; flex-direction: column; }
+  .project-num { font-family: var(--font-mono); font-size: 10px; color: var(--border); letter-spacing: 0.1em; margin-bottom: 20px; font-variant-numeric: tabular-nums; }
+  .project-name { font-size: 22px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 8px; }
+  .project-type { font-family: var(--font-mono); font-size: 11px; color: var(--accent); margin-bottom: 16px; }
+  .project-desc { font-size: 14px; color: var(--muted); line-height: 1.65; flex: 1; margin-bottom: 24px; }
+  .project-links { display: flex; gap: 12px; margin-top: 6px; }
+  .project-link { font-family: var(--font-mono); font-size: 11px; color: var(--muted); border: 1px solid var(--border); padding: 5px 12px; border-radius: 2px; transition: all 0.15s; }
+  .project-link:hover { color: var(--accent); border-color: var(--accent); text-decoration: none; }
+  .project-image { background: var(--surface); position: relative; overflow: hidden; }
+  .project-image-inner { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 8px; }
+  .project-image-label { font-family: var(--font-mono); font-size: 11px; color: var(--border); letter-spacing: 0.08em; text-transform: uppercase; }
+  .project-stack-pill { font-family: var(--font-mono); font-size: 10px; color: var(--muted); border: 1px solid var(--border); padding: 2px 8px; border-radius: 2px; }
+
+  .carousel-nav { display: flex; align-items: center; justify-content: space-between; margin-top: 16px; }
+  .carousel-counter { font-family: var(--font-mono); font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .carousel-controls { display: flex; gap: 8px; }
+  .carousel-btn { background: var(--surface); border: 1px solid var(--border); color: var(--muted); width: 32px; height: 32px; border-radius: 3px; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
+  .carousel-btn:hover { color: var(--fg); border-color: var(--muted); }
+  .carousel-btn:disabled { opacity: 0.3; cursor: default; }
+  .carousel-dots { display: flex; gap: 6px; align-items: center; }
+  .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--border); cursor: pointer; transition: background 0.15s; }
+  .dot.active { background: var(--accent); }
+
+  .skills-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+  .skill-group { background: var(--surface); padding: 20px 24px; }
+  .skill-group-title { font-family: var(--font-mono); font-size: 10px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px; }
+  .skill-pills { display: flex; flex-wrap: wrap; gap: 5px; }
+  .skill-pill { font-family: var(--font-mono); font-size: 11px; color: var(--fg); background: var(--surface2); border: 1px solid var(--border); padding: 3px 9px; border-radius: 2px; }
+  .skill-pill.highlight { color: var(--accent); border-color: oklch(62% 0.22 295 / 0.35); background: var(--accent-dim); }
+
+  .contact-row { display: flex; gap: 16px; flex-wrap: wrap; }
+  .contact-card { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 20px 24px; min-width: 200px; flex: 1; transition: border-color 0.15s; }
+  .contact-card:hover { border-color: var(--accent); }
+  .contact-label { font-family: var(--font-mono); font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px; }
+  .contact-val { font-family: var(--font-mono); font-size: 13px; color: var(--accent); }
+
+  footer { padding: 32px 0; border-top: 1px solid var(--border); }
+  .footer-inner { display: flex; justify-content: space-between; align-items: center; max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+  .footer-copy { font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
+
+  @media (max-width: 768px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .hero-photo-col { order: -1; justify-content: flex-start; }
+    .hero-avatar-placeholder, .hero-avatar { width: 80px; height: 80px; font-size: 28px; border-radius: 50%; }
+    .about-grid { grid-template-columns: 1fr; }
+    .exp-item { grid-template-columns: 1fr; gap: 8px; }
+    .project-card { grid-template-columns: 1fr; }
+    .project-image { min-height: 160px; }
+    .skills-grid { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+  }
+
+  [data-lang-es] { display: none; }
+  body.lang-es [data-lang-en] { display: none; }
+  body.lang-es [data-lang-es] { display: revert; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <span class="nav-logo">androetto<span>.</span>dev</span>
+    <ul class="nav-links">
+      <li><a href="#about" data-lang-en>About</a><a href="#about" data-lang-es>Sobre mí</a></li>
+      <li><a href="#experience" data-lang-en>Experience</a><a href="#experience" data-lang-es>Experiencia</a></li>
+      <li><a href="#projects" data-lang-en>Projects</a><a href="#projects" data-lang-es>Proyectos</a></li>
+      <li><a href="#skills" data-lang-en>Skills</a><a href="#skills" data-lang-es>Skills</a></li>
+      <li><a href="#contact" data-lang-en>Contact</a><a href="#contact" data-lang-es>Contacto</a></li>
+    </ul>
+    <button class="lang-toggle" onclick="toggleLang()" id="lang-btn">ES</button>
+  </div>
+</nav>
+
+<section id="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div>
+        <div class="hero-eyebrow">
+          <span data-lang-en>Full-Stack Developer · <span id="hero-yrs-en"></span></span>
+          <span data-lang-es>Desarrollador Full-Stack · <span id="hero-yrs-es"></span></span>
+        </div>
+        <h1 class="hero-name">Pablo Androetto</h1>
+        <p class="hero-title">Sr. Full-Stack &amp; AI Lead</p>
+        <p class="hero-desc">
+          <span data-lang-en>I build systems, not features. <span id="hero-yrs-body-en"></span> shipping production software across web, mobile, infra, and AI. Currently leading AI initiatives at Nearpod, from agentic frameworks to LLM eval pipelines. Based in Italy 🇮🇹, from Argentina 🇦🇷.</span>
+          <span data-lang-es>Construyo sistemas, no features. <span id="hero-yrs-body-es"></span> enviando software a producción en web, mobile, infra e IA. Actualmente liderando iniciativas de IA en Nearpod, desde frameworks agénticos hasta pipelines de evaluación de LLMs. Vivo en Italia 🇮🇹, soy argentino 🇦🇷.</span>
+        </p>
+        <div class="hero-ctas">
+          <a href="#contact" class="btn btn-primary">
+            <span data-lang-en>Get in touch</span>
+            <span data-lang-es>Contacto</span>
+          </a>
+          <a href="https://github.com/androettop" target="_blank" class="btn btn-secondary">github.com/androettop</a>
+          <a href="https://linkedin.com/in/androettop" target="_blank" class="btn btn-secondary">LinkedIn</a>
+        </div>
+        <div class="hero-meta">
+          <a href="mailto:pablo@androetto.dev">✉ pablo@androetto.dev</a>
+          <a href="https://github.com/loops-ar" target="_blank">github.com/loops-ar</a>
+        </div>
+      </div>
+      <div class="hero-photo-col">
+        <img
+          src="https://avatars.githubusercontent.com/u/17651502?v=4"
+          alt="Pablo Androetto"
+          class="hero-avatar"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+        >
+        <div class="hero-avatar-placeholder" style="display:none">PA</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="about" class="section">
+  <div class="container">
+    <div class="section-label">
+      <span data-lang-en>// about</span>
+      <span data-lang-es>// sobre mí</span>
+    </div>
+    <div class="about-grid">
+      <div class="about-text">
+        <p data-lang-en>Programming is my favourite thing. Not as a job,  as a way of thinking. I've been building since 2014 and I still get genuinely excited when a hard problem clicks into place. I love the whole spectrum: web, mobile, low-level systems, hardware, game engines, audio processing, AI. Give me an interesting constraint and I'll find an elegant way through it.</p>
+        <p data-lang-es>Programar es mi actividad favorita. No como trabajo,  como forma de pensar. Construyo desde 2014 y todavía me emociona genuinamente cuando un problema difícil encaja. Me apasiona todo el espectro: web, mobile, sistemas de bajo nivel, hardware, motores de juego, procesamiento de audio, IA. Dame una restricción interesante y encontraré una solución elegante.</p>
+        <p data-lang-en>I'm the kind of developer who reverse-engineers Bluetooth protocols on the weekend for fun, writes a custom game engine because the existing ones felt wrong, and builds a drum learning app from scratch because I wanted to learn drums and couldn't find the tool I was imagining. Side projects are where I go deep on things that fascinate me,  no deadlines, no compromises.</p>
+        <p data-lang-es>Soy el tipo de desarrollador que en el fin de semana hace ingeniería inversa de protocolos Bluetooth por diversión, escribe un motor de juego porque los existentes no se sentían bien, y construye una app para aprender batería porque quería aprender y no encontraba la herramienta que imaginaba. Los proyectos personales son donde profundizo en lo que me fascina,  sin deadlines, sin compromisos.</p>
+        <p data-lang-en>I care deeply about <strong>doing things right</strong>,  architecture that will hold up, developer experience that doesn't waste people's time, AI systems that are actually safe to ship. I've been building with LLMs since 2021 and I still find every layer of the stack genuinely interesting to work on.</p>
+        <p data-lang-es>Me importa profundamente <strong>hacer las cosas bien</strong>,  arquitectura que se sostenga en el tiempo, experiencia de desarrollador que no desperdicie el tiempo de nadie, sistemas de IA que realmente sean seguros de desplegar. Trabajo con LLMs desde 2021 y todavía encuentro genuinamente interesante cada capa del stack.</p>
+        <p data-lang-en>I live in Italy. I'm Argentine, but moving here was one of the best decisions I've ever made,  culturally it fits like a glove.</p>
+        <p data-lang-es>Vivo en Italia. Soy argentino, pero mudarme acá fue una de las mejores decisiones que tomé,  culturalmente encaja perfecto.</p>
+      </div>
+      <div>
+        <div class="stat-grid">
+          <div class="stat-cell">
+            <div class="stat-num" id="stat-yrs"></div>
+            <div class="stat-label" data-lang-en>Years coding</div>
+            <div class="stat-label" data-lang-es>Años programando</div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-num">2021</div>
+            <div class="stat-label" data-lang-en>Building with LLMs since</div>
+            <div class="stat-label" data-lang-es>Trabajando con LLMs desde</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="experience" class="section">
+  <div class="container">
+    <div class="section-label">
+      <span data-lang-en>// experience</span>
+      <span data-lang-es>// experiencia</span>
+    </div>
+    <div class="exp-list">
+
+      <div class="exp-item">
+        <div class="exp-meta">
+          <div class="exp-period">Jan 2022 — Present</div>
+          <div class="exp-duration" id="dur-nearpod"></div>
+        </div>
+        <div>
+          <div class="exp-company">Nearpod <span style="color:var(--muted);font-weight:400;font-size:13px;">via PSh</span></div>
+          <div class="exp-role">Sr. Full-Stack Developer / AI Lead</div>
+          <p class="exp-desc" data-lang-en>Led AI initiatives and software architecture working directly with the CTO. <strong>Before OpenAI Agents SDK</strong>, designed and shipped an internal agentic framework for LLM orchestration, guardrails and evals,  the company's AI stack today. Modernized the presentation editor (20+ activity types, unified architecture) and shipped AI quiz/lesson generation in production.</p>
+          <p class="exp-desc" data-lang-es>Lideré iniciativas de IA y arquitectura de software trabajando directamente con el CTO. <strong>Antes del OpenAI Agents SDK</strong>, diseñé y lancé un framework agéntico interno para orquestación de LLMs, guardrails y evals,  el stack de IA de la empresa hoy. Modernicé el editor de presentaciones (20+ tipos de actividades) y lancé generación de quizzes y lecciones con IA en producción.</p>
+          <ul class="exp-bullets" data-lang-en>
+            <li>Built internal CLI for environment/repo/container management,  adopted org-wide</li>
+            <li>Built internal AI Playground Hub for rapid agent prototyping → production</li>
+            <li>Designed scalable MFE architecture for Nearpod's presentation editor</li>
+          </ul>
+          <ul class="exp-bullets" data-lang-es>
+            <li>CLI interna para gestión de entornos/repos/contenedores,  adoptada por todo el equipo</li>
+            <li>AI Playground Hub interno para prototipado rápido de agentes → producción</li>
+            <li>Arquitectura MFE escalable para el editor de presentaciones de Nearpod</li>
+          </ul>
+          <div class="tag-row">
+            <span class="tag">TypeScript</span><span class="tag">Python</span><span class="tag">NestJS</span><span class="tag">React</span><span class="tag">MFE</span><span class="tag">LLMs</span><span class="tag">RAG</span><span class="tag">Evals</span><span class="tag">Docker</span><span class="tag">CI/CD</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-meta">
+          <div class="exp-period">Aug 2020 — Present</div>
+          <div class="exp-duration" id="dur-loops"></div>
+        </div>
+        <div>
+          <div class="exp-company">loops</div>
+          <div class="exp-role">Founder &amp; Lead Engineer</div>
+          <p class="exp-desc" data-lang-en>Own venture: built JugaYa (sports booking app), AI consulting for agentic workflows &amp; LLM integration, ERP solutions (Odoo) for real clients, scalable architecture design and legacy modernization.</p>
+          <p class="exp-desc" data-lang-es>Emprendimiento propio: construí JugaYa (app de reservas deportivas), consultoría en workflows agénticos e integración de LLMs, soluciones ERP (Odoo) para clientes reales, diseño de arquitecturas escalables y modernización de software legacy.</p>
+          <div class="tag-row">
+            <span class="tag">TypeScript</span><span class="tag">Python</span><span class="tag">React</span><span class="tag">Node.js</span><span class="tag">Odoo</span><span class="tag">Docker</span><span class="tag">Kubernetes</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-meta">
+          <div class="exp-period">Sep 2024 — Mar 2025</div>
+          <div class="exp-duration">7 mos</div>
+        </div>
+        <div>
+          <div class="exp-company">CERIC-ERIC <span style="color:var(--muted);font-weight:400;font-size:12px;margin-left:6px;font-family:var(--font-mono)">Italy</span></div>
+          <div class="exp-role">Full-Stack Developer</div>
+          <p class="exp-desc" data-lang-en>Open-source research proposal management system. CKAN data portal customization. One of the best professional and personal experiences,  on the ground in Italy.</p>
+          <p class="exp-desc" data-lang-es>Sistema open source de gestión de propuestas de investigación. Personalización de portal de datos CKAN. Una de las mejores experiencias profesionales y personales,  en Italia.</p>
+          <div class="tag-row">
+            <span class="tag">Python</span><span class="tag">Django</span><span class="tag">TypeScript</span><span class="tag">CKAN</span><span class="tag">NestJS</span><span class="tag">React</span><span class="tag">Docker</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-meta">
+          <div class="exp-period">May 2021 — Jan 2022</div>
+          <div class="exp-duration">9 mos</div>
+        </div>
+        <div>
+          <div class="exp-company">NEORIS <span style="color:var(--muted);font-weight:400;font-size:13px;">/ AGEA</span></div>
+          <div class="exp-role">Sr. Full-Stack Developer</div>
+          <p class="exp-desc" data-lang-en>Led dev team for a large-scale news publishing platform. Designed frontend architecture, built component library, and authored automation to accelerate delivery. Legacy refactor + CI/CD improvements.</p>
+          <p class="exp-desc" data-lang-es>Lideré el equipo de una plataforma de publicación de noticias a gran escala. Arquitectura frontend, librería de componentes y automatizaciones. Refactor de legacy + mejoras de CI/CD.</p>
+          <div class="tag-row">
+            <span class="tag">React</span><span class="tag">TypeScript</span><span class="tag">Node.js</span><span class="tag">Docker</span><span class="tag">MongoDB</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-meta">
+          <div class="exp-period">Mar 2018 — Jul 2020</div>
+          <div class="exp-duration">2 yrs 4 mos</div>
+        </div>
+        <div>
+          <div class="exp-company">FUTIT Services</div>
+          <div class="exp-role">Ssr. Full-Stack Engineer</div>
+          <p class="exp-desc" data-lang-en>Openbravo/Etendo ERP module development. Web &amp; mobile apps with ERP integration. Large-scale PostgreSQL, CI/CD with Bitbucket/Gradle/Nexus, team management.</p>
+          <p class="exp-desc" data-lang-es>Desarrollo de módulos Openbravo/Etendo ERP. Apps web y mobile con integración ERP. PostgreSQL a gran escala, CI/CD con Bitbucket/Gradle/Nexus, gestión de equipo.</p>
+          <div class="tag-row">
+            <span class="tag">Java</span><span class="tag">JavaScript</span><span class="tag">React</span><span class="tag">PostgreSQL</span><span class="tag">Docker</span><span class="tag">Kubernetes</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="projects" class="section">
+  <div class="container">
+    <div class="section-label">
+      <span data-lang-en>// projects</span>
+      <span data-lang-es>// proyectos</span>
+    </div>
+    <div class="carousel-wrapper">
+      <div class="carousel-track-outer">
+        <div class="carousel-track" id="carouselTrack">
+
+          <div class="project-card">
+            <div class="project-content">
+              <div class="project-num">01 / 09</div>
+              <div class="project-name">parasync</div>
+              <div class="project-type">OSS · Music / Game Engine</div>
+              <p class="project-desc" data-lang-en>Guitar Hero–style drums app compatible with Paradiddle songs. Custom game engine, low-level audio processing, community song library integration. Built in Rust + TypeScript.</p>
+              <p class="project-desc" data-lang-es>App de batería estilo Guitar Hero compatible con canciones de Paradiddle. Motor de juego propio, procesamiento de audio de bajo nivel, integración con repositorios de canciones comunitarios. Rust + TypeScript.</p>
+              <div class="tag-row"><span class="tag">Rust</span><span class="tag">TypeScript</span><span class="tag">Audio DSP</span><span class="tag">Game Engine</span></div>
+              <div class="project-links"><a href="https://github.com/androettop/parasync" target="_blank" class="project-link">github →</a></div>
+            </div>
+            <div class="project-image"><div class="project-image-inner" style="background-repeat: no-repeat;background: url(https://github.com/androettop/parasync/blob/master/483922729-a349cd02-548a-45e6-9751-6e2af3dad0e5.png?raw=true);background-size: contain;background-position: center;background-repeat: no-repeat;"></div></div>
+          </div>
+
+          <div class="project-card">
+            <div class="project-content">
+              <div class="project-num">02 / 09</div>
+              <div class="project-name">gopadel</div>
+              <div class="project-type">OSS · Hardware / Reverse Engineering</div>
+              <p class="project-desc" data-lang-en>Two-part project: a ball-machine simulator for padel (C# + Bluetooth reverse engineering) and a Tauri desktop frontend (Rust + TypeScript). Low-level protocol RE, hardware control, clean UI.</p>
+              <p class="project-desc" data-lang-es>Proyecto en dos partes: simulador de máquina lanzapelotas de pádel (C# + RE Bluetooth) y frontend de escritorio en Tauri (Rust + TypeScript). RE de protocolo de bajo nivel, control de hardware, UI limpia.</p>
+              <div class="tag-row"><span class="tag">C#</span><span class="tag">Rust</span><span class="tag">TypeScript</span><span class="tag">Tauri</span><span class="tag">Bluetooth RE</span></div>
+              <div class="project-links">
+                <a href="https://github.com/androettop/gopadel-tauri" target="_blank" class="project-link">tauri app →</a>
+                <a href="https://github.com/androettop/gopadel-simulator" target="_blank" class="project-link">simulator →</a>
+              </div>
+            </div>
+            <div class="project-image"><div class="project-image-inner" style="background-repeat: no-repeat;background: url(https://github.com/androettop/gopadel-simulator/blob/main/Ui/bg.png?raw=true);background-size: contain;background-position: center;background-repeat: no-repeat;"></div></div>
+          </div>
+
+          <div class="project-card">
+            <div class="project-content">
+              <div class="project-num">03 / 09</div>
+              <div class="project-name">nivel21</div>
+              <div class="project-type">OSS · Gaming / Browser Extension</div>
+              <p class="project-desc" data-lang-en>Gaming community browser extension with JavaScript reverse engineering. Enhances the game experience with community features and custom tooling built on top of existing game infrastructure.</p>
+              <p class="project-desc" data-lang-es>Extensión de navegador para comunidad de gaming con ingeniería inversa en JavaScript. Mejora la experiencia de juego con features comunitarios sobre la infraestructura existente del juego.</p>
+              <div class="tag-row"><span class="tag">TypeScript</span><span class="tag">Browser Extension</span><span class="tag">JS RE</span></div>
+              <div class="project-links"><a href="https://github.com/androettop/nivel21" target="_blank" class="project-link">github →</a></div>
+            </div>
+            <div class="project-image"><div class="project-image-inner" style="background-repeat: no-repeat;background: url(https://github.com/androettop/nivel21/raw/master/popup/img/token-layers.png?raw=true);background-size: contain;background-position: center;background-repeat: no-repeat;"></div></div>
+          </div>
+
+          <div class="project-card">
+            <div class="project-content">
+              <div class="project-num">04 / 09</div>
+              <div class="project-name">video-subtitle-remover</div>
+              <div class="project-type">OSS · Video Processing</div>
+              <p class="project-desc" data-lang-en>Video processing tool that removes hardcoded subtitles from video files. Built in TypeScript/Rust with low-level video manipulation, not only FFmpeg wrapper, handles frame-level operations.</p>
+              <p class="project-desc" data-lang-es>Herramienta de procesamiento de video que elimina subtítulos incrustados. TypeScript/Rust, manipulación de video de bajo nivel a nivel de frames, no solo wrapper de FFmpeg.</p>
+              <div class="tag-row"><span class="tag">TypeScript</span><span class="tag">Video Processing</span></div>
+              <div class="project-links"><a href="https://github.com/androettop/video-subtitle-remover" target="_blank" class="project-link">github →</a></div>
+            </div>
+          </div>
+
+          <div class="project-card">
+            <div class="project-content">
+              <div class="project-num">05 / 09</div>
+              <div class="project-name">CrosshairOverlay</div>
+              <div class="project-type">OSS · Accessibility · C#</div>
+              <p class="project-desc" data-lang-en>Windows accessibility overlay tool. Renders a customizable crosshair overlay on screen,  useful for low-vision users and focus assistance. Built in C# with native Windows APIs.</p>
+              <p class="project-desc" data-lang-es>Herramienta de superposición de accesibilidad para Windows. Renderiza una mira personalizable,  útil para usuarios con baja visión y asistencia de enfoque. C# con APIs nativas de Windows.</p>
+              <div class="tag-row"><span class="tag">C#</span><span class="tag">Windows API</span><span class="tag">Accessibility</span></div>
+              <div class="project-links"><a href="https://github.com/androettop/CrosshairOverlay" target="_blank" class="project-link">github →</a></div>
+            </div>
+            <div class="project-image"><div class="project-image-inner" style="background-repeat: no-repeat;background: url(https://i.imgur.com/bnefqv1.png);background-size: contain;background-position: center;background-repeat: no-repeat;"></div></div>
+          </div>
+
+          <div class="project-card">
+            <div class="project-content">
+              <div class="project-num">06 / 09</div>
+              <div class="project-name">gunner-3-remake</div>
+              <div class="project-type">OSS · Game Dev · Excalibur.js</div>
+              <p class="project-desc" data-lang-en>Remake of the classic KNPMASTER game using Excalibur.js. TypeScript, sprite handling, game loop, collision,  faithful recreation of a childhood favourite.</p>
+              <p class="project-desc" data-lang-es>Remake del clásico juego KNPMASTER usando Excalibur.js. TypeScript, sprites, game loop, colisiones,  recreación fiel de un clásico.</p>
+              <div class="tag-row"><span class="tag">TypeScript</span><span class="tag">Excalibur.js</span><span class="tag">Game Dev</span></div>
+              <div class="project-links"><a href="https://github.com/androettop/gunner-3-remake" target="_blank" class="project-link">github →</a></div>
+            </div>
+            <div class="project-image"><div class="project-image-inner" style="background-repeat: no-repeat;background: url(https://github.com/androettop/gunner-3-remake/raw/main/screenshot.png?raw=true);background-size: contain;background-position: center;background-repeat: no-repeat;"></div></div>
+          </div>
+
+          <div class="project-card">
+            <div class="project-content">
+              <div class="project-num">07 / 09</div>
+              <div class="project-name">synthesia-sdk</div>
+              <div class="project-type">OSS · SDK / AI Video</div>
+              <p class="project-desc" data-lang-en>SDK for the Synthesia API,  wraps the video generation API into a clean TypeScript library for AI avatar video generation in Node.js applications.</p>
+              <p class="project-desc" data-lang-es>SDK para la API de Synthesia,  envuelve la API de generación de video en una librería TypeScript limpia para integrar avatares de IA en apps Node.js.</p>
+              <div class="tag-row"><span class="tag">TypeScript</span><span class="tag">SDK</span><span class="tag">AI Video</span></div>
+              <div class="project-links"><a href="https://github.com/androettop/synthesia-sdk" target="_blank" class="project-link">github →</a></div>
+            </div>
+            <div class="project-image"><div class="project-image-inner" style="background-repeat: no-repeat;background: url(https://androettop.github.io/synthesia-sdk/_astro/hero-image.DiksioZ0_1D9dyX.svg);background-size: contain;background-position: center;background-repeat: no-repeat;"></div></div>
+          </div>
+
+          <div class="project-card">
+            <div class="project-content">
+              <div class="project-num">08 / 09</div>
+              <div class="project-name">create-base-cli</div>
+              <div class="project-type">OSS · Developer Tooling</div>
+              <p class="project-desc" data-lang-en>Scaffolding tool for creating advanced Node.js CLI applications. Generates a structured project with argument parsing, subcommands, help text and plugin architecture out of the box.</p>
+              <p class="project-desc" data-lang-es>Herramienta de scaffolding para crear CLIs avanzadas en Node.js. Genera un proyecto estructurado con parsing de argumentos, subcomandos, ayuda y arquitectura de plugins lista para usar.</p>
+              <div class="tag-row"><span class="tag">TypeScript</span><span class="tag">Node.js</span><span class="tag">CLI</span></div>
+              <div class="project-links"><a href="https://github.com/androettop/create-base-cli" target="_blank" class="project-link">github →</a></div>
+            </div>
+            <div class="project-image"><div class="project-image-inner" style="background-repeat: no-repeat;background: url(https://github.com/androettop/create-base-cli/raw/master/screenshot.png?raw=true);background-size: contain;background-position: center;background-repeat: no-repeat;"></div></div>
+          </div>
+
+          <div class="project-card">
+            <div class="project-content">
+              <div class="project-num">09 / 09</div>
+              <div class="project-name">JugaYa</div>
+              <div class="project-type">Product · Sports Booking</div>
+              <p class="project-desc" data-lang-en>Sports court booking app. Full mobile + web product,  real-time availability, booking management, payments. Built and maintained as founder of loops.</p>
+              <p class="project-desc" data-lang-es>App de reservas de canchas deportivas. Producto web + mobile completo,  disponibilidad en tiempo real, gestión de reservas, pagos. Construida y mantenida como fundador de loops.</p>
+              <div class="tag-row"><span class="tag">React</span><span class="tag">TypeScript</span><span class="tag">Node.js</span><span class="tag">Mobile</span></div>
+              <div class="project-links"><a href="https://jugaya.ar" target="_blank" class="project-link">jugaya.ar →</a></div>
+            </div>
+            <div class="project-image"><div class="project-image-inner" style="background-repeat: no-repeat;background: url(https://github.com/loops-ar/jugaya-landing/blob/master/public/img/phone-1.png?raw=true);background-size: contain;background-position: center;background-repeat: no-repeat;"></div></div>
+          </div>
+
+        </div>
+      </div>
+      <div class="carousel-nav">
+        <div class="carousel-dots" id="carouselDots"></div>
+        <div style="display:flex;align-items:center;gap:16px;">
+          <span class="carousel-counter"><span id="carouselCurrent">1</span> / 9</span>
+          <div class="carousel-controls">
+            <button class="carousel-btn" id="prevBtn" onclick="carouselPrev()">&#8592;</button>
+            <button class="carousel-btn" id="nextBtn" onclick="carouselNext()">&#8594;</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="skills" class="section">
+  <div class="container">
+    <div class="section-label">// skills &amp; stack</div>
+    <div class="skills-grid">
+      <div class="skill-group">
+        <div class="skill-group-title">AI / LLM</div>
+        <div class="skill-pills">
+          <span class="skill-pill highlight">Agentic frameworks</span>
+          <span class="skill-pill highlight">LLM orchestration</span>
+          <span class="skill-pill highlight">RAG</span>
+          <span class="skill-pill highlight">Guardrails</span>
+          <span class="skill-pill highlight">LLM Evals</span>
+          <span class="skill-pill">Prompt engineering</span>
+          <span class="skill-pill">AI product design</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title"><span data-lang-en>Languages</span><span data-lang-es>Lenguajes</span></div>
+        <div class="skill-pills">
+          <span class="skill-pill highlight">TypeScript</span>
+          <span class="skill-pill highlight">Python</span>
+          <span class="skill-pill">JavaScript</span>
+          <span class="skill-pill">Rust</span>
+          <span class="skill-pill">C#</span>
+          <span class="skill-pill">Java</span>
+          <span class="skill-pill">PHP</span>
+          <span class="skill-pill">SQL</span>
+          <span class="skill-pill">C++</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">Frontend</div>
+        <div class="skill-pills">
+          <span class="skill-pill highlight">React</span>
+          <span class="skill-pill">Micro-Frontends</span>
+          <span class="skill-pill">Tauri</span>
+          <span class="skill-pill">UI/UX</span>
+          <span class="skill-pill">Component libs</span>
+          <span class="skill-pill">Browser extensions</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">Backend</div>
+        <div class="skill-pills">
+          <span class="skill-pill highlight">Node.js</span>
+          <span class="skill-pill highlight">NestJS</span>
+          <span class="skill-pill">Django</span>
+          <span class="skill-pill">PHP</span>
+          <span class="skill-pill">PostgreSQL</span>
+          <span class="skill-pill">MongoDB</span>
+          <span class="skill-pill">Odoo</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">Infra / DevOps</div>
+        <div class="skill-pills">
+          <span class="skill-pill">Docker</span>
+          <span class="skill-pill">Kubernetes</span>
+          <span class="skill-pill">CI/CD</span>
+          <span class="skill-pill">GitHub Actions</span>
+          <span class="skill-pill">Portainer</span>
+          <span class="skill-pill">Gradle / Nexus</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title"><span data-lang-en>Other</span><span data-lang-es>Otros</span></div>
+        <div class="skill-pills">
+          <span class="skill-pill">Reverse engineering</span>
+          <span class="skill-pill">Low-level / drivers</span>
+          <span class="skill-pill">Game engines</span>
+          <span class="skill-pill">Audio / video DSP</span>
+          <span class="skill-pill">Bluetooth</span>
+          <span class="skill-pill">Tech leadership</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="section" style="border-bottom:none;">
+  <div class="container">
+    <div class="section-label">
+      <span data-lang-en>// contact</span>
+      <span data-lang-es>// contacto</span>
+    </div>
+    <p style="color:var(--muted);margin-bottom:28px;max-width:480px;" data-lang-en>Open to interesting engineering challenges — full-time, consulting, or collaboration.</p>
+    <p style="color:var(--muted);margin-bottom:28px;max-width:480px;" data-lang-es>Abierto a desafíos de ingeniería interesantes — full-time, consultoría o colaboración.</p>
+    <div class="contact-row">
+      <a href="mailto:pablo@androetto.dev" class="contact-card">
+        <div class="contact-label">Email</div>
+        <div class="contact-val">pablo@androetto.dev</div>
+      </a>
+      <a href="https://linkedin.com/in/androettop" target="_blank" class="contact-card">
+        <div class="contact-label">LinkedIn</div>
+        <div class="contact-val">linkedin.com/in/androettop</div>
+      </a>
+      <a href="https://github.com/androettop" target="_blank" class="contact-card">
+        <div class="contact-label">GitHub</div>
+        <div class="contact-val">github.com/androettop</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <span class="footer-copy">androetto.dev — Pablo Androetto</span>
+    <span class="footer-copy" style="color:var(--border);">Buenos Aires → Italy</span>
+  </div>
+</footer>
+
+<script>
+  // ── DURATION HELPERS ──
+  function monthsBetween(start, end) {
+    return (end.getFullYear() - start.getFullYear()) * 12 + (end.getMonth() - start.getMonth());
+  }
+  function formatDuration(months) {
+    var yrs = Math.floor(months / 12);
+    var mos = months % 12;
+    if (yrs > 0 && mos > 0) return yrs + ' yr ' + mos + ' mos';
+    if (yrs > 0) return yrs + '+ yrs';
+    return mos + ' mos';
+  }
+  function setDuration(id, startYear, startMonth) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    var now = new Date();
+    var start = new Date(startYear, startMonth - 1);
+    el.textContent = formatDuration(monthsBetween(start, now));
+  }
+
+  var now = new Date();
+  var codingStart = new Date(2014, 0);
+  var codingYrs = Math.floor(monthsBetween(codingStart, now) / 12);
+
+  var heroEn = document.getElementById('hero-yrs-en');
+  var heroEs = document.getElementById('hero-yrs-es');
+  if (heroEn) heroEn.textContent = codingYrs + '+ years';
+  if (heroEs) heroEs.textContent = codingYrs + '+ años';
+
+  var bodyEn = document.getElementById('hero-yrs-body-en');
+  var bodyEs = document.getElementById('hero-yrs-body-es');
+  if (bodyEn) bodyEn.textContent = codingYrs + '+ years';
+  if (bodyEs) bodyEs.textContent = codingYrs + '+ años';
+
+  var statYrs = document.getElementById('stat-yrs');
+  if (statYrs) statYrs.textContent = codingYrs + '+';
+
+  setDuration('dur-nearpod', 2022, 1);
+  setDuration('dur-loops',   2020, 8);
+
+  // ── LANG TOGGLE ──
+  var currentLang = localStorage.getItem('lang') || 'en';
+  applyLang(currentLang);
+
+  function toggleLang() {
+    currentLang = currentLang === 'en' ? 'es' : 'en';
+    localStorage.setItem('lang', currentLang);
+    applyLang(currentLang);
+  }
+  function applyLang(lang) {
+    document.body.classList.toggle('lang-es', lang === 'es');
+    document.getElementById('lang-btn').textContent = lang === 'en' ? 'ES' : 'EN';
+  }
+
+  // ── CAROUSEL ──
+  var currentSlide = 0;
+  var total = 9;
+  var track = document.getElementById('carouselTrack');
+  var dotsContainer = document.getElementById('carouselDots');
+  var prevBtn = document.getElementById('prevBtn');
+  var nextBtn = document.getElementById('nextBtn');
+
+  for (var i = 0; i < total; i++) {
+    (function(idx) {
+      var d = document.createElement('div');
+      d.className = 'dot' + (idx === 0 ? ' active' : '');
+      d.addEventListener('click', function() { goTo(idx); });
+      dotsContainer.appendChild(d);
+    })(i);
+  }
+
+  function goTo(n) {
+    currentSlide = ((n % total) + total) % total;
+    track.style.transform = 'translateX(-' + (currentSlide * 100) + '%)';
+    document.getElementById('carouselCurrent').textContent = currentSlide + 1;
+    dotsContainer.querySelectorAll('.dot').forEach(function(d, i) {
+      d.classList.toggle('active', i === currentSlide);
+    });
+    prevBtn.disabled = currentSlide === 0;
+    nextBtn.disabled = currentSlide === total - 1;
+  }
+  function carouselPrev() { if (currentSlide > 0) goTo(currentSlide - 1); }
+  function carouselNext() { goTo(currentSlide < total - 1 ? currentSlide + 1 : 0); }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowLeft') carouselPrev();
+    if (e.key === 'ArrowRight') carouselNext();
+  });
+
+  var carouselWrapper = document.querySelector('.carousel-wrapper');
+  var autoplayTimer = null;
+  function startAutoplay() {
+    stopAutoplay();
+    autoplayTimer = setInterval(function() {
+      goTo(currentSlide < total - 1 ? currentSlide + 1 : 0);
+    }, 5000);
+  }
+  function stopAutoplay() {
+    if (autoplayTimer) { clearInterval(autoplayTimer); autoplayTimer = null; }
+  }
+  carouselWrapper.addEventListener('mouseenter', stopAutoplay);
+  carouselWrapper.addEventListener('mouseleave', startAutoplay);
+
+  goTo(0);
+  startAutoplay();
+</script>
+</body>
+</html>
