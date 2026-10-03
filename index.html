@@ -185,8 +185,9 @@
   .project-links { display: flex; gap: 12px; margin-top: 6px; }
   .project-link { font-family: var(--font-mono); font-size: 12px; color: var(--muted); border: 1px solid var(--border); padding: 5px 12px; border-radius: 2px; transition: all 0.15s; }
   .project-link:hover { color: var(--accent); border-color: var(--accent); text-decoration: none; }
-  .project-image { background: var(--surface); position: relative; overflow: hidden; aspect-ratio: 16 / 10; order: -1; border-bottom: 1px solid var(--border); }
-  .project-image-inner { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 8px; }
+  .project-image { display: block; background: var(--surface); position: relative; overflow: hidden; aspect-ratio: 16 / 10; order: -1; border-bottom: 1px solid var(--border); }
+  .project-image-inner { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 8px; transition: transform 0.3s; }
+  .project-image:hover .project-image-inner { transform: scale(1.03); }
   .project-image-label { font-family: var(--font-mono); font-size: 12px; color: var(--border); letter-spacing: 0.08em; text-transform: uppercase; }
   .project-stack-pill { font-family: var(--font-mono); font-size: 11px; color: var(--muted); border: 1px solid var(--border); padding: 2px 8px; border-radius: 2px; }
 
@@ -467,7 +468,7 @@
             <a href="https://github.com/androettop/c3emu" target="_blank" class="project-link">github →</a>
           </div>
         </div>
-        <div class="project-image"><div class="project-image-inner" style="background-repeat: no-repeat;background: url(https://github.com/androettop/c3emu/raw/main/screenshots/c3emu.png?raw=true);background-size: contain;background-position: center;background-repeat: no-repeat;"></div></div>
+        <a class="project-image" href="https://github.com/androettop/c3emu" target="_blank" aria-label="c3emu"><div class="project-image-inner" style="background-repeat: no-repeat;background: url(https://github.com/androettop/c3emu/raw/main/screenshots/c3emu.png?raw=true);background-size: contain;background-position: center;background-repeat: no-repeat;"></div></a>
       </div>
 
       <div class="project-card">
@@ -484,7 +485,7 @@
             <a href="https://github.com/androettop/grim" target="_blank" class="project-link">github →</a>
           </div>
         </div>
-        <div class="project-image"><div class="project-image-inner" style="background-repeat: no-repeat;background: url(https://github.com/androettop/grim/raw/main/docs/screenshots/entrance-hall.png?raw=true);background-size: cover;background-position: center;background-repeat: no-repeat;"></div></div>
+        <a class="project-image" href="https://github.com/androettop/grim" target="_blank" aria-label="grim"><div class="project-image-inner" style="background-repeat: no-repeat;background: url(https://github.com/androettop/grim/raw/main/docs/screenshots/entrance-hall.png?raw=true);background-size: cover;background-position: center;background-repeat: no-repeat;"></div></a>
       </div>
 
       <div class="project-card">
@@ -501,21 +502,21 @@
             <a href="https://github.com/androettop/gunner3" target="_blank" class="project-link">github →</a>
           </div>
         </div>
-        <div class="project-image"><div class="project-image-inner" style="background-repeat: no-repeat;background: url(https://github.com/androettop/gunner3/raw/main/docs/screenshots/level.png?raw=true);background-size: contain;background-position: center;background-repeat: no-repeat;"></div></div>
+        <a class="project-image" href="https://github.com/androettop/gunner3" target="_blank" aria-label="gunner3"><div class="project-image-inner" style="background-repeat: no-repeat;background: url(https://github.com/androettop/gunner3/raw/main/docs/screenshots/level.png?raw=true);background-size: contain;background-position: center;background-repeat: no-repeat;"></div></a>
       </div>
 
       <div class="project-card">
         <div class="project-content">
           <div class="project-num">04 / 08</div>
           <div class="project-name">CrosshairOverlay</div>
-          <div class="project-type">OSS · Accessibility · C#</div>
-          <p class="project-desc" data-lang-en>Windows accessibility overlay tool. Renders a customizable crosshair overlay on screen,  useful for low-vision users and focus assistance. Built in C# with native Windows APIs.</p>
-          <p class="project-desc" data-lang-es>Herramienta de superposición de accesibilidad para Windows. Renderiza una mira personalizable,  útil para usuarios con baja visión y asistencia de enfoque. C# con APIs nativas de Windows.</p>
-          <p class="project-desc" data-lang-it>Strumento di accessibilità per Windows: mostra sullo schermo un mirino personalizzabile, utile a chi ha problemi di vista e come aiuto alla concentrazione. Scritto in C# con le API native di Windows.</p>
-          <div class="tag-row"><span class="tag">C#</span><span class="tag">Windows API</span><span class="tag">Accessibility</span></div>
+          <div class="project-type">OSS · Accessibility · Desktop</div>
+          <p class="project-desc" data-lang-en>Always-on-top, click-through crosshair that reduces motion sickness by giving your eyes a fixed reference point, for games without a built-in crosshair. Customizable dot, crosshair and dot grid presets, multi-monitor, and optional motion detection that estimates camera movement from the screen to compensate for it. Windows, macOS and Linux (X11 and Wayland).</p>
+          <p class="project-desc" data-lang-es>Mira siempre visible y transparente a los clics que reduce el mareo por movimiento dándole a la vista un punto de referencia fijo, para juegos sin mira propia. Presets personalizables de punto, mira y grilla de puntos, multi-monitor y detección de movimiento opcional que estima el movimiento de cámara en pantalla para compensarlo. Windows, macOS y Linux (X11 y Wayland).</p>
+          <p class="project-desc" data-lang-it>Un mirino sempre in primo piano, che non intercetta i clic, per ridurre la chinetosi offrendo agli occhi un punto di riferimento fisso nei giochi che non ne hanno uno. Preset personalizzabili (punto, mirino, griglia di punti), supporto multi-monitor e rilevamento del movimento opzionale, che stima lo spostamento della telecamera sullo schermo per compensarlo. Windows, macOS e Linux (X11 e Wayland).</p>
+          <div class="tag-row"><span class="tag">C#</span><span class="tag">Avalonia</span><span class="tag">Cross-platform</span><span class="tag">Accessibility</span></div>
           <div class="project-links"><a href="https://github.com/androettop/CrosshairOverlay" target="_blank" class="project-link">github →</a></div>
         </div>
-        <div class="project-image"><div class="project-image-inner" style="background-repeat: no-repeat;background: url(https://i.imgur.com/bnefqv1.png);background-size: contain;background-position: center;background-repeat: no-repeat;"></div></div>
+        <a class="project-image" href="https://github.com/androettop/CrosshairOverlay" target="_blank" aria-label="CrosshairOverlay"><div class="project-image-inner" style="background-repeat: no-repeat;background: url(https://github.com/androettop/CrosshairOverlay/raw/master/screenshots/settings.png?raw=true);background-size: contain;background-position: center;background-repeat: no-repeat;"></div></a>
       </div>
 
       <div class="project-card">
@@ -529,7 +530,7 @@
           <div class="tag-row"><span class="tag">TypeScript</span><span class="tag">Browser Extension</span><span class="tag">JS RE</span></div>
           <div class="project-links"><a href="https://github.com/androettop/nivel21" target="_blank" class="project-link">github →</a></div>
         </div>
-        <div class="project-image"><div class="project-image-inner" style="background-repeat: no-repeat;background: url(https://github.com/androettop/nivel21/raw/master/popup/img/token-layers.png?raw=true);background-size: contain;background-position: center;background-repeat: no-repeat;"></div></div>
+        <a class="project-image" href="https://github.com/androettop/nivel21" target="_blank" aria-label="nivel21"><div class="project-image-inner" style="background-repeat: no-repeat;background: url(https://github.com/androettop/nivel21/raw/master/popup/img/token-layers.png?raw=true);background-size: contain;background-position: center;background-repeat: no-repeat;"></div></a>
       </div>
 
       <div class="project-card">
@@ -543,7 +544,7 @@
           <div class="tag-row"><span class="tag">Rust</span><span class="tag">TypeScript</span><span class="tag">Audio DSP</span><span class="tag">Game Engine</span></div>
           <div class="project-links"><a href="https://github.com/androettop/parasync" target="_blank" class="project-link">github →</a></div>
         </div>
-        <div class="project-image"><div class="project-image-inner" style="background-repeat: no-repeat;background: url(https://github.com/androettop/parasync/blob/master/483922729-a349cd02-548a-45e6-9751-6e2af3dad0e5.png?raw=true);background-size: contain;background-position: center;background-repeat: no-repeat;"></div></div>
+        <a class="project-image" href="https://github.com/androettop/parasync" target="_blank" aria-label="parasync"><div class="project-image-inner" style="background-repeat: no-repeat;background: url(https://github.com/androettop/parasync/blob/master/483922729-a349cd02-548a-45e6-9751-6e2af3dad0e5.png?raw=true);background-size: contain;background-position: center;background-repeat: no-repeat;"></div></a>
       </div>
 
       <div class="project-card">
@@ -560,7 +561,7 @@
             <a href="https://github.com/androettop/gopadel-server" target="_blank" class="project-link">simulator →</a>
           </div>
         </div>
-        <div class="project-image"><div class="project-image-inner" style="background-repeat: no-repeat;background: url(https://github.com/androettop/gopadel-server/blob/main/Ui/bg.png?raw=true);background-size: contain;background-position: center;background-repeat: no-repeat;"></div></div>
+        <a class="project-image" href="https://github.com/androettop/gopadel-client" target="_blank" aria-label="gopadel"><div class="project-image-inner" style="background-repeat: no-repeat;background: url(https://github.com/androettop/gopadel-server/blob/main/Ui/bg.png?raw=true);background-size: contain;background-position: center;background-repeat: no-repeat;"></div></a>
       </div>
 
       <div class="project-card">
@@ -572,9 +573,9 @@
           <p class="project-desc" data-lang-es>App de reservas de canchas deportivas. Producto web + mobile completo,  disponibilidad en tiempo real, gestión de reservas, pagos. Construida y mantenida como fundador de loops.</p>
           <p class="project-desc" data-lang-it>App per prenotare campi sportivi. Un prodotto completo, web e mobile: disponibilità in tempo reale, gestione delle prenotazioni, pagamenti. L'ho sviluppata e la mantengo come fondatore di loops.</p>
           <div class="tag-row"><span class="tag">React</span><span class="tag">TypeScript</span><span class="tag">Node.js</span><span class="tag">Mobile</span></div>
-          <div class="project-links"><a href="https://jugaya.ar" target="_blank" class="project-link">jugaya.ar →</a></div>
+          <div class="project-links"><a href="https://clubes.jugaya.ar" target="_blank" class="project-link">clubes.jugaya.ar →</a></div>
         </div>
-        <div class="project-image"><div class="project-image-inner" style="background-repeat: no-repeat;background: url(https://github.com/loops-ar/jugaya-landing/blob/master/public/img/phone-1.png?raw=true);background-size: contain;background-position: center;background-repeat: no-repeat;"></div></div>
+        <a class="project-image" href="https://clubes.jugaya.ar" target="_blank" aria-label="JugaYa"><div class="project-image-inner" style="background-repeat: no-repeat;background: url(https://github.com/loops-ar/jugaya-landing/blob/master/public/img/phone-1.png?raw=true);background-size: contain;background-position: center;background-repeat: no-repeat;"></div></a>
       </div>
 
     </div>
