@@ -94,18 +94,21 @@
   .nav-links { display: flex; gap: 24px; list-style: none; align-items: center; }
   .nav-links a { font-size: 13px; color: var(--muted); transition: color 0.15s; }
   .nav-links a:hover { color: var(--fg); text-decoration: none; }
-  .lang-toggle {
-    font-family: var(--font-mono);
-    font-size: 11px;
+  .lang-switch { display: flex; gap: 4px; }
+  .lang-btn {
+    display: flex;
+    align-items: center;
     background: var(--surface);
     border: 1px solid var(--border);
-    color: var(--muted);
-    padding: 4px 10px;
+    padding: 4px 6px;
     border-radius: 3px;
     cursor: pointer;
-    transition: color 0.15s, border-color 0.15s;
+    opacity: 0.45;
+    transition: opacity 0.15s, border-color 0.15s;
   }
-  .lang-toggle:hover { color: var(--fg); border-color: var(--accent); }
+  .lang-btn svg { display: block; width: 20px; height: 14px; border-radius: 1px; }
+  .lang-btn:hover { opacity: 0.85; }
+  .lang-btn.active { opacity: 1; border-color: var(--accent); }
 
   #hero { padding: 80px 0 72px; border-bottom: 1px solid var(--border); }
   .hero-grid { display: grid; grid-template-columns: 1fr 280px; gap: 64px; align-items: center; }
@@ -170,11 +173,11 @@
   .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
   .tag { font-family: var(--font-mono); font-size: 10px; color: var(--muted); background: var(--surface2); border: 1px solid var(--border); padding: 2px 8px; border-radius: 2px; white-space: nowrap; }
 
-  .carousel-wrapper { position: relative; }
-  .carousel-track-outer { overflow: hidden; border: 1px solid var(--border); border-radius: 4px; }
-  .carousel-track { display: flex; transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1); }
-  .project-card { flex: 0 0 100%; display: grid; grid-template-columns: 1fr 340px; min-height: 320px; }
-  .project-content { padding: 36px 40px; border-right: 1px solid var(--border); display: flex; flex-direction: column; }
+  .projects-more { display: flex; justify-content: center; margin-top: 24px; }
+  .projects-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .project-card { display: flex; flex-direction: column; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; transition: border-color 0.15s; }
+  .project-card:hover { border-color: var(--muted); }
+  .project-content { padding: 28px 32px; display: flex; flex-direction: column; flex: 1; }
   .project-num { font-family: var(--font-mono); font-size: 10px; color: var(--border); letter-spacing: 0.1em; margin-bottom: 20px; font-variant-numeric: tabular-nums; }
   .project-name { font-size: 22px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 8px; }
   .project-type { font-family: var(--font-mono); font-size: 11px; color: var(--accent); margin-bottom: 16px; }
@@ -182,20 +185,10 @@
   .project-links { display: flex; gap: 12px; margin-top: 6px; }
   .project-link { font-family: var(--font-mono); font-size: 11px; color: var(--muted); border: 1px solid var(--border); padding: 5px 12px; border-radius: 2px; transition: all 0.15s; }
   .project-link:hover { color: var(--accent); border-color: var(--accent); text-decoration: none; }
-  .project-image { background: var(--surface); position: relative; overflow: hidden; }
+  .project-image { background: var(--surface); position: relative; overflow: hidden; aspect-ratio: 16 / 10; order: -1; border-bottom: 1px solid var(--border); }
   .project-image-inner { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 8px; }
   .project-image-label { font-family: var(--font-mono); font-size: 11px; color: var(--border); letter-spacing: 0.08em; text-transform: uppercase; }
   .project-stack-pill { font-family: var(--font-mono); font-size: 10px; color: var(--muted); border: 1px solid var(--border); padding: 2px 8px; border-radius: 2px; }
-
-  .carousel-nav { display: flex; align-items: center; justify-content: space-between; margin-top: 16px; }
-  .carousel-counter { font-family: var(--font-mono); font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
-  .carousel-controls { display: flex; gap: 8px; }
-  .carousel-btn { background: var(--surface); border: 1px solid var(--border); color: var(--muted); width: 32px; height: 32px; border-radius: 3px; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
-  .carousel-btn:hover { color: var(--fg); border-color: var(--muted); }
-  .carousel-btn:disabled { opacity: 0.3; cursor: default; }
-  .carousel-dots { display: flex; gap: 6px; align-items: center; }
-  .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--border); cursor: pointer; transition: background 0.15s; }
-  .dot.active { background: var(--accent); }
 
   .skills-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
   .skill-group { background: var(--surface); padding: 20px 24px; }
@@ -220,15 +213,15 @@
     .hero-avatar-placeholder, .hero-avatar { width: 80px; height: 80px; font-size: 28px; border-radius: 50%; }
     .about-grid { grid-template-columns: 1fr; }
     .exp-item { grid-template-columns: 1fr; gap: 8px; }
-    .project-card { grid-template-columns: 1fr; }
-    .project-image { min-height: 160px; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .project-content { padding: 24px; }
     .skills-grid { grid-template-columns: 1fr; }
     .nav-links { display: none; }
   }
 
-  [data-lang-es] { display: none; }
-  body.lang-es [data-lang-en] { display: none; }
-  body.lang-es [data-lang-es] { display: revert; }
+  [data-lang-es], [data-lang-it] { display: none; }
+  body.lang-es [data-lang-en], body.lang-it [data-lang-en] { display: none; }
+  body.lang-es [data-lang-es], body.lang-it [data-lang-it] { display: revert; }
 </style>
 </head>
 <body>
@@ -237,13 +230,17 @@
   <div class="nav-inner">
     <span class="nav-logo">androetto<span>.</span>dev</span>
     <ul class="nav-links">
-      <li><a href="#about" data-lang-en>About</a><a href="#about" data-lang-es>Sobre mí</a></li>
-      <li><a href="#experience" data-lang-en>Experience</a><a href="#experience" data-lang-es>Experiencia</a></li>
-      <li><a href="#projects" data-lang-en>Projects</a><a href="#projects" data-lang-es>Proyectos</a></li>
-      <li><a href="#skills" data-lang-en>Skills</a><a href="#skills" data-lang-es>Skills</a></li>
-      <li><a href="#contact" data-lang-en>Contact</a><a href="#contact" data-lang-es>Contacto</a></li>
+      <li><a href="#about" data-lang-en>About</a><a href="#about" data-lang-es>Sobre mí</a><a href="#about" data-lang-it>Chi sono</a></li>
+      <li><a href="#experience" data-lang-en>Experience</a><a href="#experience" data-lang-es>Experiencia</a><a href="#experience" data-lang-it>Esperienza</a></li>
+      <li><a href="#projects" data-lang-en>Projects</a><a href="#projects" data-lang-es>Proyectos</a><a href="#projects" data-lang-it>Progetti</a></li>
+      <li><a href="#skills" data-lang-en>Skills</a><a href="#skills" data-lang-es>Skills</a><a href="#skills" data-lang-it>Competenze</a></li>
+      <li><a href="#contact" data-lang-en>Contact</a><a href="#contact" data-lang-es>Contacto</a><a href="#contact" data-lang-it>Contatti</a></li>
     </ul>
-    <button class="lang-toggle" onclick="toggleLang()" id="lang-btn">ES</button>
+    <div class="lang-switch">
+      <button class="lang-btn" data-lang="en" onclick="setLang('en')" title="English" aria-label="English"><svg viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#fff"/><rect y="0.000" width="30" height="1.538" fill="#B22234"/><rect y="3.077" width="30" height="1.538" fill="#B22234"/><rect y="6.154" width="30" height="1.538" fill="#B22234"/><rect y="9.231" width="30" height="1.538" fill="#B22234"/><rect y="12.308" width="30" height="1.538" fill="#B22234"/><rect y="15.385" width="30" height="1.538" fill="#B22234"/><rect y="18.462" width="30" height="1.538" fill="#B22234"/><rect width="12" height="10.769" fill="#3C3B6E"/></svg></button>
+      <button class="lang-btn" data-lang="es" onclick="setLang('es')" title="Español" aria-label="Español"><svg viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#74ACDF"/><rect y="6.667" width="30" height="6.667" fill="#fff"/><circle cx="15" cy="10" r="2.2" fill="#F6B40E"/></svg></button>
+      <button class="lang-btn" data-lang="it" onclick="setLang('it')" title="Italiano" aria-label="Italiano"><svg viewBox="0 0 30 20" aria-hidden="true"><rect width="10" height="20" fill="#009246"/><rect x="10" width="10" height="20" fill="#fff"/><rect x="20" width="10" height="20" fill="#CE2B37"/></svg></button>
+    </div>
   </div>
 </nav>
 
@@ -254,17 +251,20 @@
         <div class="hero-eyebrow">
           <span data-lang-en>Full-Stack Developer · <span id="hero-yrs-en"></span></span>
           <span data-lang-es>Desarrollador Full-Stack · <span id="hero-yrs-es"></span></span>
+          <span data-lang-it>Sviluppatore Full-Stack · <span id="hero-yrs-it"></span></span>
         </div>
         <h1 class="hero-name">Pablo Androetto</h1>
         <p class="hero-title">Sr. Full-Stack &amp; AI Lead</p>
         <p class="hero-desc">
           <span data-lang-en>I build systems, not features. <span id="hero-yrs-body-en"></span> shipping production software across web, mobile, infra, and AI. Currently leading AI initiatives at Nearpod, from agentic frameworks to LLM eval pipelines. Based in Italy 🇮🇹, from Argentina 🇦🇷.</span>
           <span data-lang-es>Construyo sistemas, no features. <span id="hero-yrs-body-es"></span> enviando software a producción en web, mobile, infra e IA. Actualmente liderando iniciativas de IA en Nearpod, desde frameworks agénticos hasta pipelines de evaluación de LLMs. Vivo en Italia 🇮🇹, soy argentino 🇦🇷.</span>
+          <span data-lang-it>Costruisco sistemi, non singole funzionalità. Da <span id="hero-yrs-body-it"></span> porto software in produzione su web, mobile, infrastruttura e IA. Attualmente guido le iniziative di IA in Nearpod, dai framework agentici alle pipeline di valutazione degli LLM. Argentino 🇦🇷, vivo in Italia 🇮🇹.</span>
         </p>
         <div class="hero-ctas">
           <a href="#contact" class="btn btn-primary">
             <span data-lang-en>Get in touch</span>
             <span data-lang-es>Contacto</span>
+            <span data-lang-it>Contatti</span>
           </a>
           <a href="https://github.com/androettop" target="_blank" class="btn btn-secondary">github.com/androettop</a>
           <a href="https://linkedin.com/in/androettop" target="_blank" class="btn btn-secondary">LinkedIn</a>
@@ -292,17 +292,22 @@
     <div class="section-label">
       <span data-lang-en>// about</span>
       <span data-lang-es>// sobre mí</span>
+      <span data-lang-it>// chi sono</span>
     </div>
     <div class="about-grid">
       <div class="about-text">
         <p data-lang-en>Programming is my favourite thing. Not as a job,  as a way of thinking. I've been building since 2014 and I still get genuinely excited when a hard problem clicks into place. I love the whole spectrum: web, mobile, low-level systems, hardware, game engines, audio processing, AI. Give me an interesting constraint and I'll find an elegant way through it.</p>
         <p data-lang-es>Programar es mi actividad favorita. No como trabajo,  como forma de pensar. Construyo desde 2014 y todavía me emociona genuinamente cuando un problema difícil encaja. Me apasiona todo el espectro: web, mobile, sistemas de bajo nivel, hardware, motores de juego, procesamiento de audio, IA. Dame una restricción interesante y encontraré una solución elegante.</p>
+        <p data-lang-it>Programmare è la cosa che amo di più. Non come lavoro, ma come modo di pensare. Scrivo codice dal 2014 e mi emoziono ancora quando un problema difficile finalmente si risolve. Mi appassiona tutto: web, mobile, sistemi a basso livello, hardware, motori di gioco, elaborazione audio, IA. Dammi un vincolo interessante e troverò un modo elegante per risolverlo.</p>
         <p data-lang-en>I'm the kind of developer who reverse-engineers Bluetooth protocols on the weekend for fun, writes a custom game engine because the existing ones felt wrong, and builds a drum learning app from scratch because I wanted to learn drums and couldn't find the tool I was imagining. Side projects are where I go deep on things that fascinate me,  no deadlines, no compromises.</p>
         <p data-lang-es>Soy el tipo de desarrollador que en el fin de semana hace ingeniería inversa de protocolos Bluetooth por diversión, escribe un motor de juego porque los existentes no se sentían bien, y construye una app para aprender batería porque quería aprender y no encontraba la herramienta que imaginaba. Los proyectos personales son donde profundizo en lo que me fascina,  sin deadlines, sin compromisos.</p>
+        <p data-lang-it>Sono il tipo di sviluppatore che nel weekend fa reverse engineering di protocolli Bluetooth per divertimento, che si scrive un motore di gioco perché quelli esistenti non lo convincevano, e che si è costruito da zero un'app per imparare la batteria perché non trovava lo strumento che aveva in mente. Nei progetti personali vado a fondo nelle cose che mi appassionano, senza scadenze e senza compromessi.</p>
         <p data-lang-en>I care deeply about <strong>doing things right</strong>,  architecture that will hold up, developer experience that doesn't waste people's time, AI systems that are actually safe to ship. I've been building on LLMs since 2021 and I still find every layer of the stack genuinely interesting to work on.</p>
         <p data-lang-es>Me importa profundamente <strong>hacer las cosas bien</strong>,  arquitectura que se sostenga en el tiempo, experiencia de desarrollador que no desperdicie el tiempo de nadie, sistemas de IA que realmente sean seguros de desplegar. Construyo sobre LLMs desde 2021 y todavía encuentro genuinamente interesante cada capa del stack.</p>
+        <p data-lang-it>Ci tengo davvero a <strong>fare le cose per bene</strong>: un'architettura che regga nel tempo, una developer experience che non faccia perdere tempo a nessuno, sistemi di IA che si possano mettere in produzione in tutta sicurezza. Lavoro con gli LLM dal 2021 e trovo ancora appassionante ogni livello dello stack.</p>
         <p data-lang-en>I'm Argentine, living in Italy.</p>
         <p data-lang-es>Soy argentino, viviendo en Italia.</p>
+        <p data-lang-it>Sono argentino e vivo in Italia.</p>
       </div>
       <div>
         <div class="stat-grid">
@@ -310,11 +315,13 @@
             <div class="stat-num" id="stat-yrs"></div>
             <div class="stat-label" data-lang-en>Years coding</div>
             <div class="stat-label" data-lang-es>Años programando</div>
+            <div class="stat-label" data-lang-it>Anni di programmazione</div>
           </div>
           <div class="stat-cell">
             <div class="stat-num">2021</div>
             <div class="stat-label" data-lang-en>Building on LLMs since</div>
             <div class="stat-label" data-lang-es>Construyendo sobre LLMs desde</div>
+            <div class="stat-label" data-lang-it>Sviluppo con gli LLM dal</div>
           </div>
         </div>
       </div>
@@ -327,6 +334,7 @@
     <div class="section-label">
       <span data-lang-en>// experience</span>
       <span data-lang-es>// experiencia</span>
+      <span data-lang-it>// esperienza</span>
     </div>
     <div class="exp-list">
 
@@ -338,8 +346,9 @@
         <div>
           <div class="exp-company">Nearpod <span style="color:var(--muted);font-weight:400;font-size:13px;">via PSh</span></div>
           <div class="exp-role">Sr. Full-Stack Developer / AI Lead</div>
-          <p class="exp-desc" data-lang-en>Led AI initiatives and software architecture working directly with the CTO. <strong>Before OpenAI Agents SDK</strong>, designed and shipped an internal agentic framework for LLM orchestration, guardrails and evals,  the company's AI stack today. Modernized the presentation editor (20+ activity types, unified architecture) and shipped AI quiz/lesson generation in production.</p>
-          <p class="exp-desc" data-lang-es>Lideré iniciativas de IA y arquitectura de software trabajando directamente con el CTO. <strong>Antes del OpenAI Agents SDK</strong>, diseñé y lancé un framework agéntico interno para orquestación de LLMs, guardrails y evals,  el stack de IA de la empresa hoy. Modernicé el editor de presentaciones (20+ tipos de actividades) y lancé generación de quizzes y lecciones con IA en producción.</p>
+          <p class="exp-desc" data-lang-en>Led AI initiatives and software architecture working directly with the CTO. Before OpenAI Agents SDK, designed and shipped an internal agentic framework for LLM orchestration, guardrails and evals,  the company's AI stack today. Modernized the presentation editor (20+ activity types, unified architecture) and shipped AI quiz/lesson generation in production.</p>
+          <p class="exp-desc" data-lang-es>Lideré iniciativas de IA y arquitectura de software trabajando directamente con el CTO. Antes del OpenAI Agents SDK, diseñé y lancé un framework agéntico interno para orquestación de LLMs, guardrails y evals,  el stack de IA de la empresa hoy. Modernicé el editor de presentaciones (20+ tipos de actividades) y lancé generación de quizzes y lecciones con IA en producción.</p>
+          <p class="exp-desc" data-lang-it>Ho guidato le iniziative di IA e l'architettura software a stretto contatto con il CTO. Prima che uscisse l'OpenAI Agents SDK, ho progettato e portato in produzione un framework agentico interno per l'orchestrazione degli LLM, con guardrail ed eval, che oggi è la base dello stack di IA dell'azienda. Ho rinnovato l'editor delle presentazioni (oltre 20 tipi di attività) e messo in produzione la generazione di quiz e lezioni con l'IA.</p>
           <ul class="exp-bullets" data-lang-en>
             <li>Built internal CLI for environment/repo/container management,  adopted org-wide</li>
             <li>Built internal AI Playground Hub for rapid agent prototyping → production</li>
@@ -349,6 +358,11 @@
             <li>CLI interna para gestión de entornos/repos/contenedores,  adoptada por todo el equipo</li>
             <li>AI Playground Hub interno para prototipado rápido de agentes → producción</li>
             <li>Arquitectura MFE escalable para el editor de presentaciones de Nearpod</li>
+          </ul>
+          <ul class="exp-bullets" data-lang-it>
+            <li>CLI interna per gestire ambienti, repository e container, adottata da tutto il team</li>
+            <li>AI Playground Hub interno per prototipare agenti in fretta e portarli in produzione</li>
+            <li>Architettura MFE scalabile per l'editor delle presentazioni di Nearpod</li>
           </ul>
           <div class="tag-row">
             <span class="tag">TypeScript</span><span class="tag">Python</span><span class="tag">NestJS</span><span class="tag">React</span><span class="tag">MFE</span><span class="tag">LLMs</span><span class="tag">RAG</span><span class="tag">Evals</span><span class="tag">Docker</span><span class="tag">CI/CD</span>
@@ -366,6 +380,7 @@
           <div class="exp-role">Founder &amp; Lead Engineer</div>
           <p class="exp-desc" data-lang-en>Own venture: built JugaYa (sports booking app), AI consulting for agentic workflows &amp; LLM integration, ERP solutions (Odoo) for real clients, scalable architecture design and legacy modernization.</p>
           <p class="exp-desc" data-lang-es>Emprendimiento propio: construí JugaYa (app de reservas deportivas), consultoría en workflows agénticos e integración de LLMs, soluciones ERP (Odoo) para clientes reales, diseño de arquitecturas escalables y modernización de software legacy.</p>
+          <p class="exp-desc" data-lang-it>Attività in proprio: ho creato JugaYa (app per prenotare campi sportivi), faccio consulenza su workflow agentici e integrazione di LLM, ho realizzato soluzioni ERP (Odoo) per clienti reali, progettato architetture scalabili e modernizzato software legacy.</p>
           <div class="tag-row">
             <span class="tag">TypeScript</span><span class="tag">Python</span><span class="tag">React</span><span class="tag">Node.js</span><span class="tag">Odoo</span><span class="tag">Docker</span><span class="tag">Kubernetes</span>
           </div>
@@ -382,6 +397,7 @@
           <div class="exp-role">Full-Stack Developer</div>
           <p class="exp-desc" data-lang-en>Open-source research proposal management system. CKAN data portal customization. One of the best professional and personal experiences,  on the ground in Italy.</p>
           <p class="exp-desc" data-lang-es>Sistema open source de gestión de propuestas de investigación. Personalización de portal de datos CKAN. Una de las mejores experiencias profesionales y personales,  en Italia.</p>
+          <p class="exp-desc" data-lang-it>Sistema open source per la gestione delle proposte di ricerca. Personalizzazione del portale open data CKAN. Una delle esperienze più belle che abbia vissuto, sia a livello professionale che personale, lavorando qui in Italia.</p>
           <div class="tag-row">
             <span class="tag">Python</span><span class="tag">Django</span><span class="tag">TypeScript</span><span class="tag">CKAN</span><span class="tag">NestJS</span><span class="tag">React</span><span class="tag">Docker</span>
           </div>
@@ -398,6 +414,7 @@
           <div class="exp-role">Sr. Full-Stack Developer</div>
           <p class="exp-desc" data-lang-en>Led dev team for a large-scale news publishing platform. Designed frontend architecture, built component library, and authored automation to accelerate delivery. Legacy refactor + CI/CD improvements.</p>
           <p class="exp-desc" data-lang-es>Lideré el equipo de una plataforma de publicación de noticias a gran escala. Arquitectura frontend, librería de componentes y automatizaciones. Refactor de legacy + mejoras de CI/CD.</p>
+          <p class="exp-desc" data-lang-it>Ho guidato il team di sviluppo di una grande piattaforma editoriale di notizie. Ho definito l'architettura frontend, creato la libreria di componenti e sviluppato automazioni per velocizzare i rilasci. Refactoring del codice legacy e miglioramenti alla CI/CD.</p>
           <div class="tag-row">
             <span class="tag">React</span><span class="tag">TypeScript</span><span class="tag">Node.js</span><span class="tag">Docker</span><span class="tag">MongoDB</span>
           </div>
@@ -414,6 +431,7 @@
           <div class="exp-role">Ssr. Full-Stack Engineer</div>
           <p class="exp-desc" data-lang-en>Openbravo/Etendo ERP module development. Web &amp; mobile apps with ERP integration. Large-scale PostgreSQL, CI/CD with Bitbucket/Gradle/Nexus, team management.</p>
           <p class="exp-desc" data-lang-es>Desarrollo de módulos Openbravo/Etendo ERP. Apps web y mobile con integración ERP. PostgreSQL a gran escala, CI/CD con Bitbucket/Gradle/Nexus, gestión de equipo.</p>
+          <p class="exp-desc" data-lang-it>Sviluppo di moduli per gli ERP Openbravo/Etendo. App web e mobile integrate con l'ERP. PostgreSQL su larga scala, CI/CD con Bitbucket/Gradle/Nexus e gestione del team.</p>
           <div class="tag-row">
             <span class="tag">Java</span><span class="tag">JavaScript</span><span class="tag">React</span><span class="tag">PostgreSQL</span><span class="tag">Docker</span><span class="tag">Kubernetes</span>
           </div>
@@ -429,145 +447,137 @@
     <div class="section-label">
       <span data-lang-en>// projects</span>
       <span data-lang-es>// proyectos</span>
+      <span data-lang-it>// progetti</span>
     </div>
-    <div class="carousel-wrapper">
-      <div class="carousel-track-outer">
-        <div class="carousel-track" id="carouselTrack">
+    <div class="projects-grid">
 
-          <div class="project-card">
-            <div class="project-content">
-              <div class="project-num">01 / 09</div>
-              <div class="project-name">parasync</div>
-              <div class="project-type">OSS · Music / Game Engine</div>
-              <p class="project-desc" data-lang-en>Guitar Hero–style drums app compatible with Paradiddle songs. Custom game engine, low-level audio processing, community song library integration. Built in Rust + TypeScript.</p>
-              <p class="project-desc" data-lang-es>App de batería estilo Guitar Hero compatible con canciones de Paradiddle. Motor de juego propio, procesamiento de audio de bajo nivel, integración con repositorios de canciones comunitarios. Rust + TypeScript.</p>
-              <div class="tag-row"><span class="tag">Rust</span><span class="tag">TypeScript</span><span class="tag">Audio DSP</span><span class="tag">Game Engine</span></div>
-              <div class="project-links"><a href="https://github.com/androettop/parasync" target="_blank" class="project-link">github →</a></div>
-            </div>
-            <div class="project-image"><div class="project-image-inner" style="background-repeat: no-repeat;background: url(https://github.com/androettop/parasync/blob/master/483922729-a349cd02-548a-45e6-9751-6e2af3dad0e5.png?raw=true);background-size: contain;background-position: center;background-repeat: no-repeat;"></div></div>
-          </div>
-
-          <div class="project-card">
-            <div class="project-content">
-              <div class="project-num">02 / 09</div>
-              <div class="project-name">gopadel</div>
-              <div class="project-type">OSS · Hardware / Reverse Engineering</div>
-              <p class="project-desc" data-lang-en>Two-part project: a ball-machine simulator for padel (C# + Bluetooth reverse engineering) and a Tauri desktop frontend (Rust + TypeScript). Low-level protocol RE, hardware control, clean UI.</p>
-              <p class="project-desc" data-lang-es>Proyecto en dos partes: simulador de máquina lanzapelotas de pádel (C# + RE Bluetooth) y frontend de escritorio en Tauri (Rust + TypeScript). RE de protocolo de bajo nivel, control de hardware, UI limpia.</p>
-              <div class="tag-row"><span class="tag">C#</span><span class="tag">Rust</span><span class="tag">TypeScript</span><span class="tag">Tauri</span><span class="tag">Bluetooth RE</span></div>
-              <div class="project-links">
-                <a href="https://github.com/androettop/gopadel-client" target="_blank" class="project-link">client app →</a>
-                <a href="https://github.com/androettop/gopadel-server" target="_blank" class="project-link">simulator →</a>
-              </div>
-            </div>
-            <div class="project-image"><div class="project-image-inner" style="background-repeat: no-repeat;background: url(https://github.com/androettop/gopadel-server/blob/main/Ui/bg.png?raw=true);background-size: contain;background-position: center;background-repeat: no-repeat;"></div></div>
-          </div>
-
-          <div class="project-card">
-            <div class="project-content">
-              <div class="project-num">03 / 09</div>
-              <div class="project-name">nivel21</div>
-              <div class="project-type">OSS · Gaming / Browser Extension</div>
-              <p class="project-desc" data-lang-en>Gaming community browser extension with JavaScript reverse engineering. Enhances the game experience with community features and custom tooling built on top of existing game infrastructure.</p>
-              <p class="project-desc" data-lang-es>Extensión de navegador para comunidad de gaming con ingeniería inversa en JavaScript. Mejora la experiencia de juego con features comunitarios sobre la infraestructura existente del juego.</p>
-              <div class="tag-row"><span class="tag">TypeScript</span><span class="tag">Browser Extension</span><span class="tag">JS RE</span></div>
-              <div class="project-links"><a href="https://github.com/androettop/nivel21" target="_blank" class="project-link">github →</a></div>
-            </div>
-            <div class="project-image"><div class="project-image-inner" style="background-repeat: no-repeat;background: url(https://github.com/androettop/nivel21/raw/master/popup/img/token-layers.png?raw=true);background-size: contain;background-position: center;background-repeat: no-repeat;"></div></div>
-          </div>
-
-          <div class="project-card">
-            <div class="project-content">
-              <div class="project-num">04 / 09</div>
-              <div class="project-name">video-subtitle-remover</div>
-              <div class="project-type">OSS · Video Processing</div>
-              <p class="project-desc" data-lang-en>Video processing tool that removes hardcoded subtitles from video files. Built in TypeScript/Rust with low-level video manipulation, not only FFmpeg wrapper, handles frame-level operations.</p>
-              <p class="project-desc" data-lang-es>Herramienta de procesamiento de video que elimina subtítulos incrustados. TypeScript/Rust, manipulación de video de bajo nivel a nivel de frames, no solo wrapper de FFmpeg.</p>
-              <div class="tag-row"><span class="tag">TypeScript</span><span class="tag">Video Processing</span></div>
-              <div class="project-links"><a href="https://github.com/androettop/video-subtitle-remover" target="_blank" class="project-link">github →</a></div>
-            </div>
-          </div>
-
-          <div class="project-card">
-            <div class="project-content">
-              <div class="project-num">05 / 09</div>
-              <div class="project-name">CrosshairOverlay</div>
-              <div class="project-type">OSS · Accessibility · C#</div>
-              <p class="project-desc" data-lang-en>Windows accessibility overlay tool. Renders a customizable crosshair overlay on screen,  useful for low-vision users and focus assistance. Built in C# with native Windows APIs.</p>
-              <p class="project-desc" data-lang-es>Herramienta de superposición de accesibilidad para Windows. Renderiza una mira personalizable,  útil para usuarios con baja visión y asistencia de enfoque. C# con APIs nativas de Windows.</p>
-              <div class="tag-row"><span class="tag">C#</span><span class="tag">Windows API</span><span class="tag">Accessibility</span></div>
-              <div class="project-links"><a href="https://github.com/androettop/CrosshairOverlay" target="_blank" class="project-link">github →</a></div>
-            </div>
-            <div class="project-image"><div class="project-image-inner" style="background-repeat: no-repeat;background: url(https://i.imgur.com/bnefqv1.png);background-size: contain;background-position: center;background-repeat: no-repeat;"></div></div>
-          </div>
-
-          <div class="project-card">
-            <div class="project-content">
-              <div class="project-num">06 / 09</div>
-              <div class="project-name">gunner3</div>
-              <div class="project-type">OSS · Game Dev · Reverse Engineering</div>
-              <p class="project-desc" data-lang-en>The classic Gunner 3 by KNPMaster, now playable in the browser. Instead of rewriting it, it reads the original game files and runs them as they are, so it plays exactly like the original. Also works on phones and with gamepads.</p>
-              <p class="project-desc" data-lang-es>El clásico Gunner 3 de KNPMaster, ahora jugable en el navegador. En vez de reescribirlo, lee los archivos originales del juego y los ejecuta tal cual, así que se juega exactamente como el original. También funciona en celulares y con joystick.</p>
-              <div class="tag-row"><span class="tag">TypeScript</span><span class="tag">Excalibur.js</span><span class="tag">Interpreter</span><span class="tag">Reverse Engineering</span></div>
-              <div class="project-links">
-                <a href="https://gunner3.androetto.dev/" target="_blank" class="project-link">play →</a>
-                <a href="https://github.com/androettop/gunner3" target="_blank" class="project-link">github →</a>
-              </div>
-            </div>
-            <div class="project-image"><div class="project-image-inner" style="background-repeat: no-repeat;background: url(https://github.com/androettop/gunner3/raw/main/docs/screenshots/level.png?raw=true);background-size: contain;background-position: center;background-repeat: no-repeat;"></div></div>
-          </div>
-
-          <div class="project-card">
-            <div class="project-content">
-              <div class="project-num">07 / 09</div>
-              <div class="project-name">synthesia-sdk</div>
-              <div class="project-type">OSS · SDK / AI Video</div>
-              <p class="project-desc" data-lang-en>SDK for the Synthesia API,  wraps the video generation API into a clean TypeScript library for AI avatar video generation in Node.js applications.</p>
-              <p class="project-desc" data-lang-es>SDK para la API de Synthesia,  envuelve la API de generación de video en una librería TypeScript limpia para integrar avatares de IA en apps Node.js.</p>
-              <div class="tag-row"><span class="tag">TypeScript</span><span class="tag">SDK</span><span class="tag">AI Video</span></div>
-              <div class="project-links"><a href="https://github.com/androettop/synthesia-sdk" target="_blank" class="project-link">github →</a></div>
-            </div>
-            <div class="project-image"><div class="project-image-inner" style="background-repeat: no-repeat;background: url(https://androettop.github.io/synthesia-sdk/_astro/hero-image.DiksioZ0_1D9dyX.svg);background-size: contain;background-position: center;background-repeat: no-repeat;"></div></div>
-          </div>
-
-          <div class="project-card">
-            <div class="project-content">
-              <div class="project-num">08 / 09</div>
-              <div class="project-name">create-base-cli</div>
-              <div class="project-type">OSS · Developer Tooling</div>
-              <p class="project-desc" data-lang-en>Scaffolding tool for creating advanced Node.js CLI applications. Generates a structured project with argument parsing, subcommands, help text and plugin architecture out of the box.</p>
-              <p class="project-desc" data-lang-es>Herramienta de scaffolding para crear CLIs avanzadas en Node.js. Genera un proyecto estructurado con parsing de argumentos, subcomandos, ayuda y arquitectura de plugins lista para usar.</p>
-              <div class="tag-row"><span class="tag">TypeScript</span><span class="tag">Node.js</span><span class="tag">CLI</span></div>
-              <div class="project-links"><a href="https://github.com/androettop/create-base-cli" target="_blank" class="project-link">github →</a></div>
-            </div>
-            <div class="project-image"><div class="project-image-inner" style="background-repeat: no-repeat;background: url(https://github.com/androettop/create-base-cli/raw/master/screenshot.png?raw=true);background-size: contain;background-position: center;background-repeat: no-repeat;"></div></div>
-          </div>
-
-          <div class="project-card">
-            <div class="project-content">
-              <div class="project-num">09 / 09</div>
-              <div class="project-name">JugaYa</div>
-              <div class="project-type">Product · Sports Booking</div>
-              <p class="project-desc" data-lang-en>Sports court booking app. Full mobile + web product,  real-time availability, booking management, payments. Built and maintained as founder of loops.</p>
-              <p class="project-desc" data-lang-es>App de reservas de canchas deportivas. Producto web + mobile completo,  disponibilidad en tiempo real, gestión de reservas, pagos. Construida y mantenida como fundador de loops.</p>
-              <div class="tag-row"><span class="tag">React</span><span class="tag">TypeScript</span><span class="tag">Node.js</span><span class="tag">Mobile</span></div>
-              <div class="project-links"><a href="https://jugaya.ar" target="_blank" class="project-link">jugaya.ar →</a></div>
-            </div>
-            <div class="project-image"><div class="project-image-inner" style="background-repeat: no-repeat;background: url(https://github.com/loops-ar/jugaya-landing/blob/master/public/img/phone-1.png?raw=true);background-size: contain;background-position: center;background-repeat: no-repeat;"></div></div>
-          </div>
-
-        </div>
-      </div>
-      <div class="carousel-nav">
-        <div class="carousel-dots" id="carouselDots"></div>
-        <div style="display:flex;align-items:center;gap:16px;">
-          <span class="carousel-counter"><span id="carouselCurrent">1</span> / 9</span>
-          <div class="carousel-controls">
-            <button class="carousel-btn" id="prevBtn" onclick="carouselPrev()">&#8592;</button>
-            <button class="carousel-btn" id="nextBtn" onclick="carouselNext()">&#8594;</button>
+      <div class="project-card">
+        <div class="project-content">
+          <div class="project-num">01 / 08</div>
+          <div class="project-name">c3emu</div>
+          <div class="project-type">OSS · Emulation · Reverse Engineering</div>
+          <p class="project-desc" data-lang-en>Emulator for the Nokia C3-00 that boots the phone's own Series 40 firmware. ARM926EJ-S interpreter written in Rust plus the SoC devices the OS needs: display, keypad, DSP audio, timers, flash. Runs on the desktop and in the browser via WebAssembly, and it's deterministic.</p>
+          <p class="project-desc" data-lang-es>Emulador del Nokia C3-00 que bootea el firmware Series 40 original del teléfono. Intérprete ARM926EJ-S escrito en Rust más los dispositivos del SoC que necesita el sistema: pantalla, teclado, audio DSP, timers, flash. Corre en escritorio y en el navegador con WebAssembly, y es determinístico.</p>
+          <p class="project-desc" data-lang-it>Emulatore del Nokia C3-00 che avvia il firmware Series 40 originale del telefono. Un interprete ARM926EJ-S scritto in Rust, insieme alle periferiche del SoC di cui ha bisogno il sistema operativo: display, tastiera, audio DSP, timer, memoria flash. Gira su desktop e nel browser tramite WebAssembly, ed è deterministico.</p>
+          <div class="tag-row"><span class="tag">Rust</span><span class="tag">WebAssembly</span><span class="tag">ARM</span><span class="tag">Emulation</span></div>
+          <div class="project-links">
+            <a href="https://androettop.github.io/c3emu/" target="_blank" class="project-link">try it →</a>
+            <a href="https://github.com/androettop/c3emu" target="_blank" class="project-link">github →</a>
           </div>
         </div>
+        <div class="project-image"><div class="project-image-inner" style="background-repeat: no-repeat;background: url(img/c3emu.webp);background-size: contain;background-position: center;background-repeat: no-repeat;"></div></div>
       </div>
+
+      <div class="project-card">
+        <div class="project-content">
+          <div class="project-num">02 / 08</div>
+          <div class="project-name">grim</div>
+          <div class="project-type">OSS · Game Engine · Reverse Engineering</div>
+          <p class="project-desc" data-lang-en>From-scratch Rust reimplementation of the engine behind Harry Potter and the Chamber of Secrets (PC, 2002), a modified Unreal Engine 1. Reads the original packages and runs the game's own UnrealScript in its own VM. Lightmaps, particles, sound and cutscenes, on Linux and in the browser with WebGPU.</p>
+          <p class="project-desc" data-lang-es>Reimplementación desde cero en Rust del motor de Harry Potter y la Cámara Secreta (PC, 2002), un Unreal Engine 1 modificado. Lee los paquetes originales y ejecuta el UnrealScript del juego en su propia máquina virtual. Lightmaps, partículas, sonido y cinemáticas, en Linux y en el navegador con WebGPU.</p>
+          <p class="project-desc" data-lang-it>Il motore di Harry Potter e la Camera dei Segreti (PC, 2002), una versione modificata dell'Unreal Engine 1, riscritto da zero in Rust. Legge i file originali del gioco ed esegue il suo UnrealScript in una macchina virtuale propria. Lightmap, particelle, audio e filmati, su Linux e nel browser con WebGPU.</p>
+          <div class="tag-row"><span class="tag">Rust</span><span class="tag">wgpu</span><span class="tag">Unreal Engine 1</span><span class="tag">Reverse Engineering</span></div>
+          <div class="project-links">
+            <a href="https://androettop.github.io/grim/" target="_blank" class="project-link">play →</a>
+            <a href="https://github.com/androettop/grim" target="_blank" class="project-link">github →</a>
+          </div>
+        </div>
+        <div class="project-image"><div class="project-image-inner" style="background-repeat: no-repeat;background: url(https://github.com/androettop/grim/raw/main/docs/screenshots/entrance-hall.png?raw=true);background-size: cover;background-position: center;background-repeat: no-repeat;"></div></div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-content">
+          <div class="project-num">03 / 08</div>
+          <div class="project-name">gunner3</div>
+          <div class="project-type">OSS · Game Dev · Reverse Engineering</div>
+          <p class="project-desc" data-lang-en>The classic Gunner 3 by KNPMaster, now playable in the browser. Instead of rewriting it, it reads the original game files and runs them as they are, so it plays exactly like the original. Also works on phones and with gamepads.</p>
+          <p class="project-desc" data-lang-es>El clásico Gunner 3 de KNPMaster, ahora jugable en el navegador. En vez de reescribirlo, lee los archivos originales del juego y los ejecuta tal cual, así que se juega exactamente como el original. También funciona en celulares y con joystick.</p>
+          <p class="project-desc" data-lang-it>Il classico Gunner 3 di KNPMaster, ora giocabile nel browser. Invece di riscriverlo, legge i file originali del gioco e li esegue così come sono, per cui si gioca esattamente come l'originale. Funziona anche da smartphone e con il gamepad.</p>
+          <div class="tag-row"><span class="tag">TypeScript</span><span class="tag">Excalibur.js</span><span class="tag">Interpreter</span><span class="tag">Reverse Engineering</span></div>
+          <div class="project-links">
+            <a href="https://gunner3.androetto.dev/" target="_blank" class="project-link">play →</a>
+            <a href="https://github.com/androettop/gunner3" target="_blank" class="project-link">github →</a>
+          </div>
+        </div>
+        <div class="project-image"><div class="project-image-inner" style="background-repeat: no-repeat;background: url(https://github.com/androettop/gunner3/raw/main/docs/screenshots/level.png?raw=true);background-size: contain;background-position: center;background-repeat: no-repeat;"></div></div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-content">
+          <div class="project-num">04 / 08</div>
+          <div class="project-name">CrosshairOverlay</div>
+          <div class="project-type">OSS · Accessibility · C#</div>
+          <p class="project-desc" data-lang-en>Windows accessibility overlay tool. Renders a customizable crosshair overlay on screen,  useful for low-vision users and focus assistance. Built in C# with native Windows APIs.</p>
+          <p class="project-desc" data-lang-es>Herramienta de superposición de accesibilidad para Windows. Renderiza una mira personalizable,  útil para usuarios con baja visión y asistencia de enfoque. C# con APIs nativas de Windows.</p>
+          <p class="project-desc" data-lang-it>Strumento di accessibilità per Windows: mostra sullo schermo un mirino personalizzabile, utile a chi ha problemi di vista e come aiuto alla concentrazione. Scritto in C# con le API native di Windows.</p>
+          <div class="tag-row"><span class="tag">C#</span><span class="tag">Windows API</span><span class="tag">Accessibility</span></div>
+          <div class="project-links"><a href="https://github.com/androettop/CrosshairOverlay" target="_blank" class="project-link">github →</a></div>
+        </div>
+        <div class="project-image"><div class="project-image-inner" style="background-repeat: no-repeat;background: url(https://i.imgur.com/bnefqv1.png);background-size: contain;background-position: center;background-repeat: no-repeat;"></div></div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-content">
+          <div class="project-num">05 / 08</div>
+          <div class="project-name">nivel21</div>
+          <div class="project-type">OSS · Gaming / Browser Extension</div>
+          <p class="project-desc" data-lang-en>Gaming community browser extension with JavaScript reverse engineering. Enhances the game experience with community features and custom tooling built on top of existing game infrastructure.</p>
+          <p class="project-desc" data-lang-es>Extensión de navegador para comunidad de gaming con ingeniería inversa en JavaScript. Mejora la experiencia de juego con features comunitarios sobre la infraestructura existente del juego.</p>
+          <p class="project-desc" data-lang-it>Estensione per browser pensata per una community di gaming, basata sul reverse engineering del JavaScript del gioco. Arricchisce l'esperienza di gioco con funzionalità per la community, costruite sopra l'infrastruttura esistente.</p>
+          <div class="tag-row"><span class="tag">TypeScript</span><span class="tag">Browser Extension</span><span class="tag">JS RE</span></div>
+          <div class="project-links"><a href="https://github.com/androettop/nivel21" target="_blank" class="project-link">github →</a></div>
+        </div>
+        <div class="project-image"><div class="project-image-inner" style="background-repeat: no-repeat;background: url(https://github.com/androettop/nivel21/raw/master/popup/img/token-layers.png?raw=true);background-size: contain;background-position: center;background-repeat: no-repeat;"></div></div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-content">
+          <div class="project-num">06 / 08</div>
+          <div class="project-name">parasync</div>
+          <div class="project-type">OSS · Music / Game Engine</div>
+          <p class="project-desc" data-lang-en>Guitar Hero–style drums app compatible with Paradiddle songs. Custom game engine, low-level audio processing, community song library integration. Built in Rust + TypeScript.</p>
+          <p class="project-desc" data-lang-es>App de batería estilo Guitar Hero compatible con canciones de Paradiddle. Motor de juego propio, procesamiento de audio de bajo nivel, integración con repositorios de canciones comunitarios. Rust + TypeScript.</p>
+          <p class="project-desc" data-lang-it>App per suonare la batteria in stile Guitar Hero, compatibile con i brani di Paradiddle. Motore di gioco scritto da zero, elaborazione audio a basso livello e integrazione con le librerie di brani della community. Rust + TypeScript.</p>
+          <div class="tag-row"><span class="tag">Rust</span><span class="tag">TypeScript</span><span class="tag">Audio DSP</span><span class="tag">Game Engine</span></div>
+          <div class="project-links"><a href="https://github.com/androettop/parasync" target="_blank" class="project-link">github →</a></div>
+        </div>
+        <div class="project-image"><div class="project-image-inner" style="background-repeat: no-repeat;background: url(https://github.com/androettop/parasync/blob/master/483922729-a349cd02-548a-45e6-9751-6e2af3dad0e5.png?raw=true);background-size: contain;background-position: center;background-repeat: no-repeat;"></div></div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-content">
+          <div class="project-num">07 / 08</div>
+          <div class="project-name">gopadel</div>
+          <div class="project-type">OSS · Hardware / Reverse Engineering</div>
+          <p class="project-desc" data-lang-en>Two-part project: a ball-machine simulator for padel (C# + Bluetooth reverse engineering) and a Tauri desktop frontend (Rust + TypeScript). Low-level protocol RE, hardware control, clean UI.</p>
+          <p class="project-desc" data-lang-es>Proyecto en dos partes: simulador de máquina lanzapelotas de pádel (C# + RE Bluetooth) y frontend de escritorio en Tauri (Rust + TypeScript). RE de protocolo de bajo nivel, control de hardware, UI limpia.</p>
+          <p class="project-desc" data-lang-it>Progetto in due parti: un simulatore della macchina lanciapalle da padel (C# + reverse engineering del Bluetooth) e un'app desktop in Tauri (Rust + TypeScript). Reverse engineering del protocollo a basso livello, controllo dell'hardware e un'interfaccia pulita.</p>
+          <div class="tag-row"><span class="tag">C#</span><span class="tag">Rust</span><span class="tag">TypeScript</span><span class="tag">Tauri</span><span class="tag">Bluetooth RE</span></div>
+          <div class="project-links">
+            <a href="https://github.com/androettop/gopadel-client" target="_blank" class="project-link">client app →</a>
+            <a href="https://github.com/androettop/gopadel-server" target="_blank" class="project-link">simulator →</a>
+          </div>
+        </div>
+        <div class="project-image"><div class="project-image-inner" style="background-repeat: no-repeat;background: url(https://github.com/androettop/gopadel-server/blob/main/Ui/bg.png?raw=true);background-size: contain;background-position: center;background-repeat: no-repeat;"></div></div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-content">
+          <div class="project-num">08 / 08</div>
+          <div class="project-name">JugaYa</div>
+          <div class="project-type">Product · Sports Booking</div>
+          <p class="project-desc" data-lang-en>Sports court booking app. Full mobile + web product,  real-time availability, booking management, payments. Built and maintained as founder of loops.</p>
+          <p class="project-desc" data-lang-es>App de reservas de canchas deportivas. Producto web + mobile completo,  disponibilidad en tiempo real, gestión de reservas, pagos. Construida y mantenida como fundador de loops.</p>
+          <p class="project-desc" data-lang-it>App per prenotare campi sportivi. Un prodotto completo, web e mobile: disponibilità in tempo reale, gestione delle prenotazioni, pagamenti. L'ho sviluppata e la mantengo come fondatore di loops.</p>
+          <div class="tag-row"><span class="tag">React</span><span class="tag">TypeScript</span><span class="tag">Node.js</span><span class="tag">Mobile</span></div>
+          <div class="project-links"><a href="https://jugaya.ar" target="_blank" class="project-link">jugaya.ar →</a></div>
+        </div>
+        <div class="project-image"><div class="project-image-inner" style="background-repeat: no-repeat;background: url(https://github.com/loops-ar/jugaya-landing/blob/master/public/img/phone-1.png?raw=true);background-size: contain;background-position: center;background-repeat: no-repeat;"></div></div>
+      </div>
+
+    </div>
+    <div class="projects-more">
+      <a href="https://github.com/androettop?tab=repositories" target="_blank" class="project-link"><span data-lang-en>more projects on github →</span><span data-lang-es>más proyectos en github →</span><span data-lang-it>altri progetti su github →</span></a>
     </div>
   </div>
 </section>
@@ -589,7 +599,7 @@
         </div>
       </div>
       <div class="skill-group">
-        <div class="skill-group-title"><span data-lang-en>Languages</span><span data-lang-es>Lenguajes</span></div>
+        <div class="skill-group-title"><span data-lang-en>Languages</span><span data-lang-es>Lenguajes</span><span data-lang-it>Linguaggi</span></div>
         <div class="skill-pills">
           <span class="skill-pill">TypeScript</span>
           <span class="skill-pill">Python</span>
@@ -637,7 +647,7 @@
         </div>
       </div>
       <div class="skill-group">
-        <div class="skill-group-title"><span data-lang-en>Other</span><span data-lang-es>Otros</span></div>
+        <div class="skill-group-title"><span data-lang-en>Other</span><span data-lang-es>Otros</span><span data-lang-it>Altro</span></div>
         <div class="skill-pills">
           <span class="skill-pill">Reverse engineering</span>
           <span class="skill-pill">Low-level / drivers</span>
@@ -656,9 +666,11 @@
     <div class="section-label">
       <span data-lang-en>// contact</span>
       <span data-lang-es>// contacto</span>
+      <span data-lang-it>// contatti</span>
     </div>
     <p style="color:var(--muted);margin-bottom:28px;max-width:480px;" data-lang-en>Open to interesting engineering challenges — full-time, consulting, or collaboration.</p>
     <p style="color:var(--muted);margin-bottom:28px;max-width:480px;" data-lang-es>Abierto a desafíos de ingeniería interesantes — full-time, consultoría o colaboración.</p>
+    <p style="color:var(--muted);margin-bottom:28px;max-width:480px;" data-lang-it>Sempre aperto a sfide tecniche interessanti: full-time, consulenza o collaborazioni.</p>
     <div class="contact-row">
       <a href="mailto:pablo@androetto.dev" class="contact-card">
         <div class="contact-label">Email</div>
@@ -711,11 +723,15 @@
   var heroEs = document.getElementById('hero-yrs-es');
   if (heroEn) heroEn.textContent = codingYrs + '+ years';
   if (heroEs) heroEs.textContent = codingYrs + '+ años';
+  var heroIt = document.getElementById('hero-yrs-it');
+  if (heroIt) heroIt.textContent = codingYrs + '+ anni';
 
   var bodyEn = document.getElementById('hero-yrs-body-en');
   var bodyEs = document.getElementById('hero-yrs-body-es');
   if (bodyEn) bodyEn.textContent = codingYrs + '+ years';
   if (bodyEs) bodyEs.textContent = codingYrs + '+ años';
+  var bodyIt = document.getElementById('hero-yrs-body-it');
+  if (bodyIt) bodyIt.textContent = 'oltre ' + codingYrs + ' anni';
 
   var statYrs = document.getElementById('stat-yrs');
   if (statYrs) statYrs.textContent = codingYrs + '+';
@@ -723,71 +739,27 @@
   setDuration('dur-nearpod', 2022, 1);
   setDuration('dur-loops',   2020, 8);
 
-  // ── LANG TOGGLE ──
-  var currentLang = localStorage.getItem('lang') || 'en';
+  // ── LANG SWITCH ──
+  var langs = ['en', 'es', 'it'];
+  var currentLang = localStorage.getItem('lang');
+  if (langs.indexOf(currentLang) === -1) currentLang = 'en';
   applyLang(currentLang);
 
-  function toggleLang() {
-    currentLang = currentLang === 'en' ? 'es' : 'en';
+  function setLang(lang) {
+    currentLang = lang;
     localStorage.setItem('lang', currentLang);
     applyLang(currentLang);
   }
   function applyLang(lang) {
     document.body.classList.toggle('lang-es', lang === 'es');
-    document.getElementById('lang-btn').textContent = lang === 'en' ? 'ES' : 'EN';
-  }
-
-  // ── CAROUSEL ──
-  var currentSlide = 0;
-  var total = 9;
-  var track = document.getElementById('carouselTrack');
-  var dotsContainer = document.getElementById('carouselDots');
-  var prevBtn = document.getElementById('prevBtn');
-  var nextBtn = document.getElementById('nextBtn');
-
-  for (var i = 0; i < total; i++) {
-    (function(idx) {
-      var d = document.createElement('div');
-      d.className = 'dot' + (idx === 0 ? ' active' : '');
-      d.addEventListener('click', function() { goTo(idx); });
-      dotsContainer.appendChild(d);
-    })(i);
-  }
-
-  function goTo(n) {
-    currentSlide = ((n % total) + total) % total;
-    track.style.transform = 'translateX(-' + (currentSlide * 100) + '%)';
-    document.getElementById('carouselCurrent').textContent = currentSlide + 1;
-    dotsContainer.querySelectorAll('.dot').forEach(function(d, i) {
-      d.classList.toggle('active', i === currentSlide);
+    document.body.classList.toggle('lang-it', lang === 'it');
+    document.documentElement.lang = lang;
+    document.querySelectorAll('.lang-btn').forEach(function(b) {
+      var active = b.getAttribute('data-lang') === lang;
+      b.classList.toggle('active', active);
+      b.setAttribute('aria-pressed', active);
     });
-    prevBtn.disabled = currentSlide === 0;
-    nextBtn.disabled = currentSlide === total - 1;
   }
-  function carouselPrev() { if (currentSlide > 0) goTo(currentSlide - 1); }
-  function carouselNext() { goTo(currentSlide < total - 1 ? currentSlide + 1 : 0); }
-
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'ArrowLeft') carouselPrev();
-    if (e.key === 'ArrowRight') carouselNext();
-  });
-
-  var carouselWrapper = document.querySelector('.carousel-wrapper');
-  var autoplayTimer = null;
-  function startAutoplay() {
-    stopAutoplay();
-    autoplayTimer = setInterval(function() {
-      goTo(currentSlide < total - 1 ? currentSlide + 1 : 0);
-    }, 5000);
-  }
-  function stopAutoplay() {
-    if (autoplayTimer) { clearInterval(autoplayTimer); autoplayTimer = null; }
-  }
-  carouselWrapper.addEventListener('mouseenter', stopAutoplay);
-  carouselWrapper.addEventListener('mouseleave', startAutoplay);
-
-  goTo(0);
-  startAutoplay();
 </script>
 </body>
 </html>
