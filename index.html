@@ -191,6 +191,19 @@
   .project-image-label { font-family: var(--font-mono); font-size: 12px; color: var(--border); letter-spacing: 0.08em; text-transform: uppercase; }
   .project-stack-pill { font-family: var(--font-mono); font-size: 11px; color: var(--muted); border: 1px solid var(--border); padding: 2px 8px; border-radius: 2px; }
 
+  .client-intro { color: var(--muted); max-width: 620px; margin-bottom: 24px; }
+  .client-logo { height: 84px; display: flex; align-items: center; justify-content: center; background: #fff; border-radius: 4px; padding: 12px 16px; margin-bottom: 8px; }
+  .client-logo img { max-height: 52px; max-width: min(78%, 170px); object-fit: contain; }
+  .client-list li > div:not(.client-logo), .client-list li > a { padding: 0 6px; }
+  .client-list li > a { margin-top: auto; padding-top: 6px; }
+  .client-what { line-height: 1.5; }
+  .client-list { list-style: none; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .client-list li { display: flex; flex-direction: column; justify-content: flex-start; gap: 4px; padding: 10px 10px 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; }
+  .client-what { font-size: 13px; color: var(--muted); margin-top: 2px; }
+  .client-name { font-size: 15px; font-weight: 600; }
+  .client-list a { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+  .client-list a:hover { color: var(--accent); text-decoration: none; }
+
   .skills-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
   .skill-group { background: var(--surface); padding: 20px 24px; }
   .skill-group-title { font-family: var(--font-mono); font-size: 11px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px; }
@@ -220,6 +233,88 @@
     .nav-links { display: none; }
   }
 
+
+  /* ── layout & a11y refinements ── */
+  .skip-link { position: absolute; left: 16px; top: -48px; z-index: 200; background: var(--accent); color: #fff; padding: 8px 14px; border-radius: 3px; font-family: var(--font-mono); font-size: 13px; }
+  .skip-link:focus { top: 12px; text-decoration: none; }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+  html { scroll-padding-top: 64px; }
+  .section { padding: 72px 0; }
+
+  .exp-list { gap: 10px; }
+  .exp-item { display: block; padding: 0; border: 1px solid var(--border); border-radius: 6px; background: var(--surface); }
+  .exp-item:last-child { border-bottom: 1px solid var(--border); }
+  .exp-item summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: 1fr auto 20px; gap: 6px 24px; align-items: center; padding: 18px 22px; }
+  .exp-item summary::-webkit-details-marker { display: none; }
+  .exp-item summary:hover .exp-company { color: var(--accent); }
+  .exp-item .exp-company { margin-bottom: 0; transition: color 0.15s; }
+  .exp-item .exp-role { margin-bottom: 0; font-size: 13px; }
+  .exp-sum-meta { display: flex; align-items: center; gap: 10px; justify-content: flex-end; }
+  .exp-sum-meta .exp-period { margin: 0; }
+  .exp-chevron { width: 18px; height: 18px; color: var(--muted); transition: transform 0.2s; }
+  .exp-item[open] .exp-chevron { transform: rotate(180deg); }
+  .exp-body { padding: 0 22px 20px; border-top: 1px solid var(--border); padding-top: 18px; }
+  .exp-body .exp-desc:last-of-type { margin-bottom: 12px; }
+
+  .filter-bar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+  .filter-btn { font-family: var(--font-mono); font-size: 12px; color: var(--muted); background: transparent; border: 1px solid var(--border); padding: 6px 14px; border-radius: 999px; cursor: pointer; transition: all 0.15s; }
+  .filter-btn:hover { color: var(--fg); border-color: var(--muted); }
+  .filter-btn[aria-pressed="true"] { color: var(--fg); background: var(--accent-dim); border-color: var(--accent); }
+  .projects-grid { grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .project-card { border-radius: 6px; background: var(--surface); }
+  .project-card[hidden] { display: none; }
+  .project-content { padding: 20px 22px 22px; }
+  .project-name { font-size: 20px; margin-bottom: 4px; }
+  .project-type { font-size: 11px; margin-bottom: 12px; }
+  .project-desc { font-size: 15px; line-height: 1.6; margin-bottom: 16px; }
+  .project-links { flex-wrap: wrap; gap: 8px; margin-top: 0; }
+
+  .project-card { position: relative; }
+  .project-card:hover, .project-card:focus-within { border-color: var(--accent); }
+  .project-card:hover .project-image-inner, .project-card:focus-within .project-image-inner { transform: scale(1.03); }
+  .project-name a { color: var(--fg); }
+  .project-name a::after { content: ''; position: absolute; inset: 0; z-index: 1; border-radius: 6px; }
+  .project-name a:hover { text-decoration: none; }
+  .project-name a:focus-visible { outline: none; }
+  .project-card:has(a:focus-visible) { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .project-name a > .ext { color: var(--muted); font-size: 0.8em; margin-left: 6px; transition: color 0.15s; }
+  .project-card:hover .ext { color: var(--accent); }
+  .project-content .project-desc { margin-bottom: 0; }
+  .project-name { margin-bottom: 8px; }
+
+  @media (max-width: 1024px) {
+    .client-list { grid-template-columns: repeat(2, 1fr); }
+    .projects-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 768px) {
+    .section { padding: 56px 0; }
+    #hero { padding: 40px 0 48px; }
+    .nav-inner { height: auto; flex-wrap: wrap; padding: 10px 16px 0; row-gap: 6px; }
+    .nav-links { display: flex; order: 3; width: 100%; overflow-x: auto; gap: 20px; padding: 6px 0 10px; scrollbar-width: none; }
+    .nav-links::-webkit-scrollbar { display: none; }
+    .nav-links a { white-space: nowrap; font-size: 14px; }
+    html { scroll-padding-top: 96px; }
+    .exp-item summary { grid-template-columns: 1fr 20px; padding: 16px; }
+    .exp-sum-meta { grid-column: 1; grid-row: 2; justify-content: flex-start; }
+    .exp-chevron { grid-column: 2; grid-row: 1 / span 2; }
+    .exp-body { padding: 16px; }
+    .container { padding: 0 16px; }
+  }
+  @media (max-width: 640px) {
+    .client-list { gap: 10px; }
+    .client-list li { padding: 8px 8px 12px; }
+    .client-logo { height: 64px; padding: 8px 10px; }
+    .client-logo img { max-height: 40px; }
+    .client-list li > div:not(.client-logo), .client-list li > a { padding: 0 4px; }
+    .client-list a { font-size: 11px; white-space: nowrap; }
+    .projects-grid { grid-template-columns: 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition: none !important; }
+  }
+
   [data-lang-es], [data-lang-it] { display: none; }
   body.lang-es [data-lang-en], body.lang-it [data-lang-en] { display: none; }
   body.lang-es [data-lang-es], body.lang-it [data-lang-it] { display: revert; }
@@ -227,7 +322,9 @@
 </head>
 <body>
 
-<nav>
+<a class="skip-link" href="#main"><span data-lang-en>Skip to content</span><span data-lang-es>Saltar al contenido</span><span data-lang-it>Vai al contenuto</span></a>
+
+<nav aria-label="Main">
   <div class="nav-inner">
     <span class="nav-logo">androetto<span>.</span>dev</span>
     <ul class="nav-links">
@@ -244,6 +341,8 @@
     </div>
   </div>
 </nav>
+
+<main id="main">
 
 <section id="hero">
   <div class="container">
@@ -338,15 +437,17 @@
       <span data-lang-it>// esperienza</span>
     </div>
     <div class="exp-list">
-
-      <div class="exp-item">
-        <div class="exp-meta">
-          <div class="exp-period">Jan 2022 — Nov 2026</div>
-          <div class="exp-duration">4 yrs 10 mos</div>
-        </div>
-        <div>
-          <div class="exp-company">Nearpod / Renaissance <span style="color:var(--muted);font-weight:400;font-size:15px;">via PSh</span></div>
-          <div class="exp-role">Sr. Full-Stack Developer / AI Lead</div>
+      <details class="exp-item" open>
+        <summary>
+          <div class="exp-sum-main">
+            <div class="exp-company">Nearpod / Renaissance <span style="color:var(--muted);font-weight:400;font-size:15px;">via PSh</span></div>
+            <div class="exp-role">Sr. Full-Stack Developer / AI Lead</div>
+          </div>
+          <div class="exp-sum-meta"><div class="exp-period">Jan 2022 — Nov 2026</div>
+          <div class="exp-duration">4 yrs 10 mos</div></div>
+          <svg class="exp-chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </summary>
+        <div class="exp-body">
           <p class="exp-desc" data-lang-en>Led AI initiatives and software architecture working directly with the CTO. Before OpenAI Agents SDK, designed and shipped an internal agentic framework for LLM orchestration, guardrails and evals,  the company's AI stack today. Modernized the presentation editor (20+ activity types, unified architecture) and shipped AI quiz/lesson generation in production.</p>
           <p class="exp-desc" data-lang-es>Lideré iniciativas de IA y arquitectura de software trabajando directamente con el CTO. Antes del OpenAI Agents SDK, diseñé y lancé un framework agéntico interno para orquestación de LLMs, guardrails y evals,  el stack de IA de la empresa hoy. Modernicé el editor de presentaciones (20+ tipos de actividades) y lancé generación de quizzes y lecciones con IA en producción.</p>
           <p class="exp-desc" data-lang-it>Ho guidato le iniziative di IA e l'architettura software a stretto contatto con il CTO. Prima che uscisse l'OpenAI Agents SDK, ho progettato e portato in produzione un framework agentico interno per l'orchestrazione degli LLM, con guardrail ed eval, che oggi è la base dello stack di IA dell'azienda. Ho rinnovato l'editor delle presentazioni (oltre 20 tipi di attività) e messo in produzione la generazione di quiz e lezioni con l'IA.</p>
@@ -372,16 +473,18 @@
             <span class="tag">TypeScript</span><span class="tag">Python</span><span class="tag">NestJS</span><span class="tag">React</span><span class="tag">MFE</span><span class="tag">LLMs</span><span class="tag">RAG</span><span class="tag">Evals</span><span class="tag">Docker</span><span class="tag">CI/CD</span>
           </div>
         </div>
-      </div>
-
-      <div class="exp-item">
-        <div class="exp-meta">
-          <div class="exp-period">Sep 2024 — Mar 2025</div>
-          <div class="exp-duration">7 mos</div>
-        </div>
-        <div>
-          <div class="exp-company">CERIC-ERIC <span style="color:var(--muted);font-weight:400;font-size:13px;margin-left:6px;font-family:var(--font-mono)">Italy</span></div>
-          <div class="exp-role">Full-Stack Developer</div>
+      </details>
+      <details class="exp-item">
+        <summary>
+          <div class="exp-sum-main">
+            <div class="exp-company">CERIC-ERIC <span style="color:var(--muted);font-weight:400;font-size:13px;margin-left:6px;font-family:var(--font-mono)">Italy</span></div>
+            <div class="exp-role">Full-Stack Developer</div>
+          </div>
+          <div class="exp-sum-meta"><div class="exp-period">Sep 2024 — Mar 2025</div>
+          <div class="exp-duration">7 mos</div></div>
+          <svg class="exp-chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </summary>
+        <div class="exp-body">
           <p class="exp-desc" data-lang-en>Open-source research proposal management system. CKAN data portal customization. One of the best professional and personal experiences,  on the ground in Italy.</p>
           <p class="exp-desc" data-lang-es>Sistema open source de gestión de propuestas de investigación. Personalización de portal de datos CKAN. Una de las mejores experiencias profesionales y personales,  en Italia.</p>
           <p class="exp-desc" data-lang-it>Sistema open source per la gestione delle proposte di ricerca. Personalizzazione del portale open data CKAN. Una delle esperienze più belle che abbia vissuto, sia a livello professionale che personale, lavorando qui in Italia.</p>
@@ -389,16 +492,18 @@
             <span class="tag">Python</span><span class="tag">Django</span><span class="tag">TypeScript</span><span class="tag">CKAN</span><span class="tag">NestJS</span><span class="tag">React</span><span class="tag">Docker</span>
           </div>
         </div>
-      </div>
-
-      <div class="exp-item">
-        <div class="exp-meta">
-          <div class="exp-period">May 2021 — Jan 2022</div>
-          <div class="exp-duration">9 mos</div>
-        </div>
-        <div>
-          <div class="exp-company">NEORIS <span style="color:var(--muted);font-weight:400;font-size:15px;">/ AGEA</span></div>
-          <div class="exp-role">Sr. Full-Stack Developer</div>
+      </details>
+      <details class="exp-item">
+        <summary>
+          <div class="exp-sum-main">
+            <div class="exp-company">NEORIS <span style="color:var(--muted);font-weight:400;font-size:15px;">/ AGEA</span></div>
+            <div class="exp-role">Sr. Full-Stack Developer</div>
+          </div>
+          <div class="exp-sum-meta"><div class="exp-period">May 2021 — Jan 2022</div>
+          <div class="exp-duration">9 mos</div></div>
+          <svg class="exp-chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </summary>
+        <div class="exp-body">
           <p class="exp-desc" data-lang-en>Led dev team for a large-scale news publishing platform. Designed frontend architecture, built component library, and authored automation to accelerate delivery. Legacy refactor + CI/CD improvements.</p>
           <p class="exp-desc" data-lang-es>Lideré el equipo de una plataforma de publicación de noticias a gran escala. Arquitectura frontend, librería de componentes y automatizaciones. Refactor de legacy + mejoras de CI/CD.</p>
           <p class="exp-desc" data-lang-it>Ho guidato il team di sviluppo di una grande piattaforma editoriale di notizie. Ho definito l'architettura frontend, creato la libreria di componenti e sviluppato automazioni per velocizzare i rilasci. Refactoring del codice legacy e miglioramenti alla CI/CD.</p>
@@ -406,16 +511,18 @@
             <span class="tag">React</span><span class="tag">TypeScript</span><span class="tag">Node.js</span><span class="tag">Docker</span><span class="tag">MongoDB</span>
           </div>
         </div>
-      </div>
-
-      <div class="exp-item">
-        <div class="exp-meta">
-          <div class="exp-period">Mar 2018 — Jul 2020</div>
-          <div class="exp-duration">2 yrs 4 mos</div>
-        </div>
-        <div>
-          <div class="exp-company">FUTIT Services</div>
-          <div class="exp-role">Ssr. Full-Stack Engineer</div>
+      </details>
+      <details class="exp-item">
+        <summary>
+          <div class="exp-sum-main">
+            <div class="exp-company">FUTIT Services</div>
+            <div class="exp-role">Ssr. Full-Stack Engineer</div>
+          </div>
+          <div class="exp-sum-meta"><div class="exp-period">Mar 2018 — Jul 2020</div>
+          <div class="exp-duration">2 yrs 4 mos</div></div>
+          <svg class="exp-chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </summary>
+        <div class="exp-body">
           <p class="exp-desc" data-lang-en>Openbravo/Etendo ERP module development. Web &amp; mobile apps with ERP integration. Large-scale PostgreSQL, CI/CD with Bitbucket/Gradle/Nexus, team management.</p>
           <p class="exp-desc" data-lang-es>Desarrollo de módulos Openbravo/Etendo ERP. Apps web y mobile con integración ERP. PostgreSQL a gran escala, CI/CD con Bitbucket/Gradle/Nexus, gestión de equipo.</p>
           <p class="exp-desc" data-lang-it>Sviluppo di moduli per gli ERP Openbravo/Etendo. App web e mobile integrate con l'ERP. PostgreSQL su larga scala, CI/CD con Bitbucket/Gradle/Nexus e gestione del team.</p>
@@ -423,16 +530,18 @@
             <span class="tag">Java</span><span class="tag">JavaScript</span><span class="tag">React</span><span class="tag">PostgreSQL</span><span class="tag">Docker</span><span class="tag">Kubernetes</span>
           </div>
         </div>
-      </div>
-
-      <div class="exp-item">
-        <div class="exp-meta">
-          <div class="exp-period">2014 — Present</div>
-          <div class="exp-duration" id="dur-consulting"></div>
-        </div>
-        <div>
-          <div class="exp-company"><span data-lang-en>Independent Consultant</span><span data-lang-es>Consultor independiente</span><span data-lang-it>Consulente indipendente</span> <span style="color:var(--muted);font-weight:400;font-size:15px;">(Loops)</span></div>
-          <div class="exp-role">Founder &amp; Lead Engineer</div>
+      </details>
+      <details class="exp-item">
+        <summary>
+          <div class="exp-sum-main">
+            <div class="exp-company"><span data-lang-en>Independent Consultant</span><span data-lang-es>Consultor independiente</span><span data-lang-it>Consulente indipendente</span> <span style="color:var(--muted);font-weight:400;font-size:15px;">(Loops)</span></div>
+            <div class="exp-role">Founder &amp; Lead Engineer</div>
+          </div>
+          <div class="exp-sum-meta"><div class="exp-period">2014 — Present</div>
+          <div class="exp-duration" id="dur-consulting"></div></div>
+          <svg class="exp-chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </summary>
+        <div class="exp-body">
           <p class="exp-desc" data-lang-en>Own venture: built JugaYa (sports booking app), AI consulting for agentic workflows &amp; LLM integration, ERP solutions (Odoo) for real clients, scalable architecture design and legacy modernization.</p>
           <p class="exp-desc" data-lang-es>Emprendimiento propio: construí JugaYa (app de reservas deportivas), consultoría en workflows agénticos e integración de LLMs, soluciones ERP (Odoo) para clientes reales, diseño de arquitecturas escalables y modernización de software legacy.</p>
           <p class="exp-desc" data-lang-it>Attività in proprio: ho creato JugaYa (app per prenotare campi sportivi), faccio consulenza su workflow agentici e integrazione di LLM, ho realizzato soluzioni ERP (Odoo) per clienti reali, progettato architetture scalabili e modernizzato software legacy.</p>
@@ -440,7 +549,7 @@
             <span class="tag">TypeScript</span><span class="tag">Python</span><span class="tag">React</span><span class="tag">Node.js</span><span class="tag">Odoo</span><span class="tag">Docker</span><span class="tag">Kubernetes</span>
           </div>
         </div>
-      </div>
+      </details>
     </div>
   </div>
 </section>
@@ -452,136 +561,173 @@
       <span data-lang-es>// proyectos</span>
       <span data-lang-it>// progetti</span>
     </div>
+    <div class="filter-bar" role="group" aria-label="Filter projects">
+      <button type="button" class="filter-btn" data-filter="all" aria-pressed="true"><span data-lang-en>All</span><span data-lang-es>Todos</span><span data-lang-it>Tutti</span></button>
+      <button type="button" class="filter-btn" data-filter="product" aria-pressed="false"><span data-lang-en>Products</span><span data-lang-es>Productos</span><span data-lang-it>Prodotti</span></button>
+      <button type="button" class="filter-btn" data-filter="re" aria-pressed="false"><span data-lang-en>Reverse engineering</span><span data-lang-es>Ingeniería inversa</span><span data-lang-it>Reverse engineering</span></button>
+      <button type="button" class="filter-btn" data-filter="tool" aria-pressed="false"><span data-lang-en>Tools &amp; apps</span><span data-lang-es>Herramientas y apps</span><span data-lang-it>Strumenti e app</span></button>
+    </div>
+    <p class="sr-only" id="filter-status" aria-live="polite"></p>
     <div class="projects-grid">
-
-      <div class="project-card">
+      <div class="project-card" data-cat="product">
         <div class="project-content">
-          <div class="project-num">01 / 08</div>
-          <div class="project-name">c3emu</div>
-          <div class="project-type">OSS · Emulation · Reverse Engineering</div>
-          <p class="project-desc" data-lang-en>Emulator for the Nokia C3-00 that boots the phone's own Series 40 firmware. ARM926EJ-S interpreter written in Rust plus the SoC devices the OS needs: display, keypad, DSP audio, timers, flash. Runs on the desktop and in the browser via WebAssembly, and it's deterministic.</p>
-          <p class="project-desc" data-lang-es>Emulador del Nokia C3-00 que bootea el firmware Series 40 original del teléfono. Intérprete ARM926EJ-S escrito en Rust más los dispositivos del SoC que necesita el sistema: pantalla, teclado, audio DSP, timers, flash. Corre en escritorio y en el navegador con WebAssembly, y es determinístico.</p>
-          <p class="project-desc" data-lang-it>Emulatore del Nokia C3-00 che avvia il firmware Series 40 originale del telefono. Un interprete ARM926EJ-S scritto in Rust, insieme alle periferiche del SoC di cui ha bisogno il sistema operativo: display, tastiera, audio DSP, timer, memoria flash. Gira su desktop e nel browser tramite WebAssembly, ed è deterministico.</p>
-          <div class="tag-row"><span class="tag">Rust</span><span class="tag">WebAssembly</span><span class="tag">ARM</span><span class="tag">Emulation</span></div>
-          <div class="project-links">
-            <a href="https://androettop.github.io/c3emu/" target="_blank" class="project-link">try it →</a>
-            <a href="https://github.com/androettop/c3emu" target="_blank" class="project-link">github →</a>
-          </div>
+          <h3 class="project-name"><a href="https://clubes.jugaya.ar" target="_blank" rel="noopener">JugaYa<span class="ext" aria-hidden="true">↗</span></a></h3>
+          <p class="project-desc" data-lang-en>Sports court booking platform with 2,000+ users: real-time availability, bookings and payments, on web and mobile.</p>
+          <p class="project-desc" data-lang-es>Plataforma de reservas de canchas deportivas con más de 2.000 usuarios: disponibilidad en tiempo real, reservas y pagos, en web y mobile.</p>
+          <p class="project-desc" data-lang-it>Piattaforma per prenotare campi sportivi con oltre 2.000 utenti: disponibilità in tempo reale, prenotazioni e pagamenti, su web e mobile.</p>
         </div>
-        <a class="project-image" href="https://github.com/androettop/c3emu" target="_blank" aria-label="c3emu"><div class="project-image-inner" style="background-repeat: no-repeat;background: url(https://github.com/androettop/c3emu/raw/main/screenshots/c3emu.png?raw=true);background-size: contain;background-position: center;background-repeat: no-repeat;"></div></a>
+        <div class="project-image" aria-hidden="true"><div class="project-image-inner" style="background: url(img/covers/jugaya.webp) center / cover no-repeat;"></div></div>
       </div>
 
-      <div class="project-card">
+      <div class="project-card" data-cat="product">
         <div class="project-content">
-          <div class="project-num">02 / 08</div>
-          <div class="project-name">grim</div>
-          <div class="project-type">OSS · Game Engine · Reverse Engineering</div>
-          <p class="project-desc" data-lang-en>From-scratch Rust reimplementation of the engine behind Harry Potter and the Chamber of Secrets (PC, 2002), a modified Unreal Engine 1. Reads the original packages and runs the game's own UnrealScript in its own VM. Lightmaps, particles, sound and cutscenes, on Linux and in the browser with WebGPU.</p>
-          <p class="project-desc" data-lang-es>Reimplementación desde cero en Rust del motor de Harry Potter y la Cámara Secreta (PC, 2002), un Unreal Engine 1 modificado. Lee los paquetes originales y ejecuta el UnrealScript del juego en su propia máquina virtual. Lightmaps, partículas, sonido y cinemáticas, en Linux y en el navegador con WebGPU.</p>
-          <p class="project-desc" data-lang-it>Il motore di Harry Potter e la Camera dei Segreti (PC, 2002), una versione modificata dell'Unreal Engine 1, riscritto da zero in Rust. Legge i file originali del gioco ed esegue il suo UnrealScript in una macchina virtuale propria. Lightmap, particelle, audio e filmati, su Linux e nel browser con WebGPU.</p>
-          <div class="tag-row"><span class="tag">Rust</span><span class="tag">wgpu</span><span class="tag">Unreal Engine 1</span><span class="tag">Reverse Engineering</span></div>
-          <div class="project-links">
-            <a href="https://androettop.github.io/grim/" target="_blank" class="project-link">play →</a>
-            <a href="https://github.com/androettop/grim" target="_blank" class="project-link">github →</a>
-          </div>
+          <h3 class="project-name"><a href="https://open20.app/battle-maps" target="_blank" rel="noopener">Open20 Battle Maps<span class="ext" aria-hidden="true">↗</span></a></h3>
+          <p class="project-desc" data-lang-en>Map editor for tabletop RPGs, part of Open20. Buildings, caves, terrain and lighting, with 2,000+ free assets. Windows, macOS, Linux and Android.</p>
+          <p class="project-desc" data-lang-es>Editor de mapas para juegos de rol, parte de Open20. Edificios, cuevas, terreno e iluminación, con más de 2.000 assets gratis. Windows, macOS, Linux y Android.</p>
+          <p class="project-desc" data-lang-it>Editor di mappe per giochi di ruolo, parte di Open20. Edifici, grotte, terreno e illuminazione, con oltre 2.000 asset gratuiti. Windows, macOS, Linux e Android.</p>
         </div>
-        <a class="project-image" href="https://github.com/androettop/grim" target="_blank" aria-label="grim"><div class="project-image-inner" style="background-repeat: no-repeat;background: url(https://github.com/androettop/grim/raw/main/docs/screenshots/entrance-hall.png?raw=true);background-size: cover;background-position: center;background-repeat: no-repeat;"></div></a>
+        <div class="project-image" aria-hidden="true"><div class="project-image-inner" style="background: url(img/covers/battle-maps.webp) center / cover no-repeat;"></div></div>
       </div>
 
-      <div class="project-card">
+      <div class="project-card" data-cat="product">
         <div class="project-content">
-          <div class="project-num">03 / 08</div>
-          <div class="project-name">gunner3</div>
-          <div class="project-type">OSS · Game Dev · Reverse Engineering</div>
-          <p class="project-desc" data-lang-en>The classic Gunner 3 by KNPMaster, now playable in the browser. Instead of rewriting it, it reads the original game files and runs them as they are, so it plays exactly like the original. Also works on phones and with gamepads.</p>
-          <p class="project-desc" data-lang-es>El clásico Gunner 3 de KNPMaster, ahora jugable en el navegador. En vez de reescribirlo, lee los archivos originales del juego y los ejecuta tal cual, así que se juega exactamente como el original. También funciona en celulares y con joystick.</p>
-          <p class="project-desc" data-lang-it>Il classico Gunner 3 di KNPMaster, ora giocabile nel browser. Invece di riscriverlo, legge i file originali del gioco e li esegue così come sono, per cui si gioca esattamente come l'originale. Funziona anche da smartphone e con il gamepad.</p>
-          <div class="tag-row"><span class="tag">TypeScript</span><span class="tag">Excalibur.js</span><span class="tag">Interpreter</span><span class="tag">Reverse Engineering</span></div>
-          <div class="project-links">
-            <a href="https://gunner3.androetto.dev/" target="_blank" class="project-link">play →</a>
-            <a href="https://github.com/androettop/gunner3" target="_blank" class="project-link">github →</a>
-          </div>
+          <h3 class="project-name"><a href="https://github.com/open20-rpg/nivel21" target="_blank" rel="noopener">nivel21<span class="ext" aria-hidden="true">↗</span></a></h3>
+          <p class="project-desc" data-lang-en>Browser extension that adds the features players were missing to the Nivel20 virtual tabletop. 1,600+ installs and a Discord community of 100+ players.</p>
+          <p class="project-desc" data-lang-es>Extensión de navegador que le suma a la mesa virtual Nivel20 las funciones que les faltaban a los jugadores. Más de 1.600 instalaciones y una comunidad de más de 100 jugadores en Discord.</p>
+          <p class="project-desc" data-lang-it>Estensione per browser che aggiunge al tavolo virtuale Nivel20 le funzionalità che mancavano ai giocatori. Oltre 1.600 installazioni e una community Discord di più di 100 giocatori.</p>
         </div>
-        <a class="project-image" href="https://github.com/androettop/gunner3" target="_blank" aria-label="gunner3"><div class="project-image-inner" style="background-repeat: no-repeat;background: url(https://github.com/androettop/gunner3/raw/main/docs/screenshots/level.png?raw=true);background-size: contain;background-position: center;background-repeat: no-repeat;"></div></a>
+        <div class="project-image" aria-hidden="true"><div class="project-image-inner" style="background: url(img/covers/nivel21.webp) center / cover no-repeat;"></div></div>
       </div>
 
-      <div class="project-card">
+      <div class="project-card" data-cat="tool">
         <div class="project-content">
-          <div class="project-num">04 / 08</div>
-          <div class="project-name">CrosshairOverlay</div>
-          <div class="project-type">OSS · Accessibility · Desktop</div>
-          <p class="project-desc" data-lang-en>Always-on-top, click-through crosshair that reduces motion sickness by giving your eyes a fixed reference point, for games without a built-in crosshair. Customizable dot, crosshair and dot grid presets, multi-monitor, and optional motion detection that estimates camera movement from the screen to compensate for it. Windows, macOS and Linux (X11 and Wayland).</p>
-          <p class="project-desc" data-lang-es>Mira siempre visible y transparente a los clics que reduce el mareo por movimiento dándole a la vista un punto de referencia fijo, para juegos sin mira propia. Presets personalizables de punto, mira y grilla de puntos, multi-monitor y detección de movimiento opcional que estima el movimiento de cámara en pantalla para compensarlo. Windows, macOS y Linux (X11 y Wayland).</p>
-          <p class="project-desc" data-lang-it>Un mirino sempre in primo piano, che non intercetta i clic, per ridurre la chinetosi offrendo agli occhi un punto di riferimento fisso nei giochi che non ne hanno uno. Preset personalizzabili (punto, mirino, griglia di punti), supporto multi-monitor e rilevamento del movimento opzionale, che stima lo spostamento della telecamera sullo schermo per compensarlo. Windows, macOS e Linux (X11 e Wayland).</p>
-          <div class="tag-row"><span class="tag">C#</span><span class="tag">Avalonia</span><span class="tag">Cross-platform</span><span class="tag">Accessibility</span></div>
-          <div class="project-links"><a href="https://github.com/androettop/CrosshairOverlay" target="_blank" class="project-link">github →</a></div>
+          <h3 class="project-name"><a href="https://github.com/androettop/CrosshairOverlay" target="_blank" rel="noopener">CrosshairOverlay<span class="ext" aria-hidden="true">↗</span></a></h3>
+          <p class="project-desc" data-lang-en>An always-on-top crosshair that reduces motion sickness in games by giving your eyes a fixed point. Windows, macOS and Linux.</p>
+          <p class="project-desc" data-lang-es>Una mira siempre visible que reduce el mareo en los juegos dándole a la vista un punto fijo. Windows, macOS y Linux.</p>
+          <p class="project-desc" data-lang-it>Un mirino sempre in primo piano che riduce la chinetosi nei giochi offrendo agli occhi un punto fisso. Windows, macOS e Linux.</p>
         </div>
-        <a class="project-image" href="https://github.com/androettop/CrosshairOverlay" target="_blank" aria-label="CrosshairOverlay"><div class="project-image-inner" style="background-repeat: no-repeat;background: url(https://github.com/androettop/CrosshairOverlay/raw/master/screenshots/settings.png?raw=true);background-size: contain;background-position: center;background-repeat: no-repeat;"></div></a>
+        <div class="project-image" aria-hidden="true"><div class="project-image-inner" style="background: url(img/covers/crosshair.webp) center / cover no-repeat;"></div></div>
       </div>
 
-      <div class="project-card">
+      <div class="project-card" data-cat="tool">
         <div class="project-content">
-          <div class="project-num">05 / 08</div>
-          <div class="project-name">nivel21</div>
-          <div class="project-type">OSS · Gaming / Browser Extension</div>
-          <p class="project-desc" data-lang-en>Gaming community browser extension with JavaScript reverse engineering. Enhances the game experience with community features and custom tooling built on top of existing game infrastructure.</p>
-          <p class="project-desc" data-lang-es>Extensión de navegador para comunidad de gaming con ingeniería inversa en JavaScript. Mejora la experiencia de juego con features comunitarios sobre la infraestructura existente del juego.</p>
-          <p class="project-desc" data-lang-it>Estensione per browser pensata per una community di gaming, basata sul reverse engineering del JavaScript del gioco. Arricchisce l'esperienza di gioco con funzionalità per la community, costruite sopra l'infrastruttura esistente.</p>
-          <div class="tag-row"><span class="tag">TypeScript</span><span class="tag">Browser Extension</span><span class="tag">JS RE</span></div>
-          <div class="project-links"><a href="https://github.com/open20-rpg/nivel21" target="_blank" class="project-link">github →</a></div>
+          <h3 class="project-name">IluMaker</h3>
+          <p class="project-desc" data-lang-en>Desktop app that turns a drawing of keychains into a 3D print project ready for Bambu Studio, with realistic photos of the result.</p>
+          <p class="project-desc" data-lang-es>App de escritorio que convierte un dibujo de llaveros en un proyecto listo para imprimir en 3D con Bambu Studio, con fotos realistas del resultado.</p>
+          <p class="project-desc" data-lang-it>App desktop che trasforma un disegno di portachiavi in un progetto pronto da stampare in 3D con Bambu Studio, con foto realistiche del risultato.</p>
         </div>
-        <a class="project-image" href="https://github.com/open20-rpg/nivel21" target="_blank" aria-label="nivel21"><div class="project-image-inner" style="background-repeat: no-repeat;background: url(https://github.com/open20-rpg/nivel21/raw/master/popup/img/token-layers.png?raw=true);background-size: contain;background-position: center;background-repeat: no-repeat;"></div></a>
+        <div class="project-image" aria-hidden="true"><div class="project-image-inner" style="background: url(img/covers/ilumaker.webp) center / cover no-repeat;"></div></div>
       </div>
 
-      <div class="project-card">
+      <div class="project-card" data-cat="tool">
         <div class="project-content">
-          <div class="project-num">06 / 08</div>
-          <div class="project-name">parasync</div>
-          <div class="project-type">OSS · Music / Game Engine</div>
-          <p class="project-desc" data-lang-en>Guitar Hero–style drums app compatible with Paradiddle songs. Custom game engine, low-level audio processing, community song library integration. Built in Rust + TypeScript.</p>
-          <p class="project-desc" data-lang-es>App de batería estilo Guitar Hero compatible con canciones de Paradiddle. Motor de juego propio, procesamiento de audio de bajo nivel, integración con repositorios de canciones comunitarios. Rust + TypeScript.</p>
-          <p class="project-desc" data-lang-it>App per suonare la batteria in stile Guitar Hero, compatibile con i brani di Paradiddle. Motore di gioco scritto da zero, elaborazione audio a basso livello e integrazione con le librerie di brani della community. Rust + TypeScript.</p>
-          <div class="tag-row"><span class="tag">Rust</span><span class="tag">TypeScript</span><span class="tag">Audio DSP</span><span class="tag">Game Engine</span></div>
-          <div class="project-links"><a href="https://github.com/androettop/parasync" target="_blank" class="project-link">github →</a></div>
+          <h3 class="project-name"><a href="https://github.com/androettop/parasync" target="_blank" rel="noopener">parasync<span class="ext" aria-hidden="true">↗</span></a></h3>
+          <p class="project-desc" data-lang-en>Guitar Hero–style drums app compatible with Paradiddle songs, with its own game engine. Rust and TypeScript.</p>
+          <p class="project-desc" data-lang-es>App de batería estilo Guitar Hero compatible con canciones de Paradiddle, con motor de juego propio. Rust y TypeScript.</p>
+          <p class="project-desc" data-lang-it>App per la batteria in stile Guitar Hero, compatibile con i brani di Paradiddle, con un motore di gioco proprio. Rust e TypeScript.</p>
         </div>
-        <a class="project-image" href="https://github.com/androettop/parasync" target="_blank" aria-label="parasync"><div class="project-image-inner" style="background-repeat: no-repeat;background: url(https://github.com/androettop/parasync/blob/master/483922729-a349cd02-548a-45e6-9751-6e2af3dad0e5.png?raw=true);background-size: contain;background-position: center;background-repeat: no-repeat;"></div></a>
+        <div class="project-image" aria-hidden="true"><div class="project-image-inner" style="background: url(img/covers/parasync.webp) center / cover no-repeat;"></div></div>
       </div>
 
-      <div class="project-card">
+      <div class="project-card" data-cat="re">
         <div class="project-content">
-          <div class="project-num">07 / 08</div>
-          <div class="project-name">gopadel</div>
-          <div class="project-type">OSS · Hardware / Reverse Engineering</div>
-          <p class="project-desc" data-lang-en>Two-part project: a ball-machine simulator for padel (C# + Bluetooth reverse engineering) and a Tauri desktop frontend (Rust + TypeScript). Low-level protocol RE, hardware control, clean UI.</p>
-          <p class="project-desc" data-lang-es>Proyecto en dos partes: simulador de máquina lanzapelotas de pádel (C# + RE Bluetooth) y frontend de escritorio en Tauri (Rust + TypeScript). RE de protocolo de bajo nivel, control de hardware, UI limpia.</p>
-          <p class="project-desc" data-lang-it>Progetto in due parti: un simulatore della macchina lanciapalle da padel (C# + reverse engineering del Bluetooth) e un'app desktop in Tauri (Rust + TypeScript). Reverse engineering del protocollo a basso livello, controllo dell'hardware e un'interfaccia pulita.</p>
-          <div class="tag-row"><span class="tag">C#</span><span class="tag">Rust</span><span class="tag">TypeScript</span><span class="tag">Tauri</span><span class="tag">Bluetooth RE</span></div>
-          <div class="project-links">
-            <a href="https://github.com/androettop/gopadel-client" target="_blank" class="project-link">client app →</a>
-            <a href="https://github.com/androettop/gopadel-server" target="_blank" class="project-link">simulator →</a>
-          </div>
+          <h3 class="project-name"><a href="https://gunner3.androetto.dev/" target="_blank" rel="noopener">gunner3<span class="ext" aria-hidden="true">↗</span></a></h3>
+          <p class="project-desc" data-lang-en>KNPMaster's classic, playable in the browser. Instead of rewriting it, my own runtime runs the original game files, so it plays exactly the same, also on phones and gamepads.</p>
+          <p class="project-desc" data-lang-es>El clásico de KNPMaster, jugable en el navegador. En vez de reescribirlo, un runtime propio ejecuta los archivos originales, así que se juega igual, también en celulares y con joystick.</p>
+          <p class="project-desc" data-lang-it>Il classico di KNPMaster, giocabile nel browser. Invece di riscriverlo, un runtime scritto da me esegue i file originali, quindi si gioca allo stesso modo, anche da smartphone e con il gamepad.</p>
         </div>
-        <a class="project-image" href="https://github.com/androettop/gopadel-client" target="_blank" aria-label="gopadel"><div class="project-image-inner" style="background-repeat: no-repeat;background: url(https://github.com/androettop/gopadel-server/blob/main/Ui/bg.png?raw=true);background-size: contain;background-position: center;background-repeat: no-repeat;"></div></a>
+        <div class="project-image" aria-hidden="true"><div class="project-image-inner" style="background: url(img/covers/gunner3.webp) center / cover no-repeat;"></div></div>
       </div>
 
-      <div class="project-card">
+      <div class="project-card" data-cat="re">
         <div class="project-content">
-          <div class="project-num">08 / 08</div>
-          <div class="project-name">JugaYa</div>
-          <div class="project-type">Product · Sports Booking</div>
-          <p class="project-desc" data-lang-en>Sports court booking app. Full mobile + web product,  real-time availability, booking management, payments. Built and maintained as founder of loops.</p>
-          <p class="project-desc" data-lang-es>App de reservas de canchas deportivas. Producto web + mobile completo,  disponibilidad en tiempo real, gestión de reservas, pagos. Construida y mantenida como fundador de loops.</p>
-          <p class="project-desc" data-lang-it>App per prenotare campi sportivi. Un prodotto completo, web e mobile: disponibilità in tempo reale, gestione delle prenotazioni, pagamenti. L'ho sviluppata e la mantengo come fondatore di loops.</p>
-          <div class="tag-row"><span class="tag">React</span><span class="tag">TypeScript</span><span class="tag">Node.js</span><span class="tag">Mobile</span></div>
-          <div class="project-links"><a href="https://clubes.jugaya.ar" target="_blank" class="project-link">clubes.jugaya.ar →</a></div>
+          <h3 class="project-name"><a href="https://github.com/androettop/gopadel-client" target="_blank" rel="noopener">gopadel<span class="ext" aria-hidden="true">↗</span></a></h3>
+          <p class="project-desc" data-lang-en>Control for a padel ball machine: I reverse engineered its Bluetooth protocol and built a simulator and a desktop app.</p>
+          <p class="project-desc" data-lang-es>Control para una máquina lanzapelotas de pádel: hice ingeniería inversa de su protocolo Bluetooth y construí un simulador y una app de escritorio.</p>
+          <p class="project-desc" data-lang-it>Controllo per una macchina lanciapalle da padel: ho fatto reverse engineering del suo protocollo Bluetooth e ho creato un simulatore e un'app desktop.</p>
         </div>
-        <a class="project-image" href="https://clubes.jugaya.ar" target="_blank" aria-label="JugaYa"><div class="project-image-inner" style="background-repeat: no-repeat;background: url(https://github.com/loops-ar/jugaya-landing/blob/master/public/img/phone-1.png?raw=true);background-size: contain;background-position: center;background-repeat: no-repeat;"></div></a>
+        <div class="project-image" aria-hidden="true"><div class="project-image-inner" style="background: url(img/covers/gopadel.webp) center / cover no-repeat;"></div></div>
+      </div>
+
+      <div class="project-card" data-cat="tool">
+        <div class="project-content">
+          <h3 class="project-name"><a href="https://github.com/androettop/netfence" target="_blank" rel="noopener">NetFence<span class="ext" aria-hidden="true">↗</span></a></h3>
+          <p class="project-desc" data-lang-en>Steam Deck plugin that cuts Internet or LAN access for Steam and games instantly, from the Quick Access Menu.</p>
+          <p class="project-desc" data-lang-es>Plugin para Steam Deck que corta al instante el acceso a Internet o a la red local para Steam y los juegos, desde el menú rápido.</p>
+          <p class="project-desc" data-lang-it>Plugin per Steam Deck che blocca all'istante l'accesso a Internet o alla rete locale per Steam e i giochi, dal menu di accesso rapido.</p>
+        </div>
+        <div class="project-image" aria-hidden="true"><div class="project-image-inner" style="background: url(img/covers/netfence.webp) center / cover no-repeat;"></div></div>
+      </div>
+
+      <div class="project-card" data-cat="tool">
+        <div class="project-content">
+          <h3 class="project-name"><a href="https://github.com/androettop/three-inspector" target="_blank" rel="noopener">Three Inspector<span class="ext" aria-hidden="true">↗</span></a></h3>
+          <p class="project-desc" data-lang-en>DevTools panel for three.js: browse any page's scene and edit objects, materials and lights live. Chrome and Firefox.</p>
+          <p class="project-desc" data-lang-es>Panel de DevTools para three.js: recorré la escena de cualquier página y editá objetos, materiales y luces en vivo. Chrome y Firefox.</p>
+          <p class="project-desc" data-lang-it>Pannello DevTools per three.js: esplora la scena di qualsiasi pagina e modifica oggetti, materiali e luci dal vivo. Chrome e Firefox.</p>
+        </div>
+        <div class="project-image" aria-hidden="true"><div class="project-image-inner" style="background: url(img/covers/three-inspector.webp) center / cover no-repeat;"></div></div>
+      </div>
+
+      <div class="project-card" data-cat="re">
+        <div class="project-content">
+          <h3 class="project-name"><a href="https://androettop.github.io/grim/" target="_blank" rel="noopener">grim<span class="ext" aria-hidden="true">↗</span></a></h3>
+          <p class="project-desc" data-lang-en>The engine of Harry Potter and the Chamber of Secrets (PC, 2002) rewritten from scratch in Rust. It runs the game's own data and scripts, on Linux and in the browser.</p>
+          <p class="project-desc" data-lang-es>El motor de Harry Potter y la Cámara Secreta (PC, 2002) reescrito desde cero en Rust. Ejecuta los datos y scripts originales del juego, en Linux y en el navegador.</p>
+          <p class="project-desc" data-lang-it>Il motore di Harry Potter e la Camera dei Segreti (PC, 2002) riscritto da zero in Rust. Esegue i dati e gli script originali del gioco, su Linux e nel browser.</p>
+        </div>
+        <div class="project-image" aria-hidden="true"><div class="project-image-inner" style="background: url(img/covers/grim.webp) center / cover no-repeat;"></div></div>
+      </div>
+
+      <div class="project-card" data-cat="re">
+        <div class="project-content">
+          <h3 class="project-name"><a href="https://androettop.github.io/c3emu/" target="_blank" rel="noopener">c3emu<span class="ext" aria-hidden="true">↗</span></a></h3>
+          <p class="project-desc" data-lang-en>Nokia C3-00 emulator that boots the phone's original Series 40 firmware. An ARM interpreter in Rust plus the phone's hardware, on the desktop and in the browser.</p>
+          <p class="project-desc" data-lang-es>Emulador del Nokia C3-00 que bootea el firmware Series 40 original del teléfono. Un intérprete ARM en Rust más el hardware del teléfono, en escritorio y en el navegador.</p>
+          <p class="project-desc" data-lang-it>Emulatore del Nokia C3-00 che avvia il firmware Series 40 originale del telefono. Un interprete ARM in Rust più l'hardware del telefono, su desktop e nel browser.</p>
+        </div>
+        <div class="project-image" aria-hidden="true"><div class="project-image-inner" style="background: url(img/covers/c3emu.webp) center / cover no-repeat;"></div></div>
       </div>
 
     </div>
     <div class="projects-more">
       <a href="https://github.com/androettop?tab=repositories" target="_blank" class="project-link"><span data-lang-en>more projects on github →</span><span data-lang-es>más proyectos en github →</span><span data-lang-it>altri progetti su github →</span></a>
     </div>
+  </div>
+</section>
+
+<section id="clients" class="section">
+  <div class="container">
+    <div class="section-label">
+      <span data-lang-en>// custom work</span>
+      <span data-lang-es>// trabajos a medida</span>
+      <span data-lang-it>// lavori su misura</span>
+    </div>
+    <p class="client-intro" data-lang-en>Software I designed and built for businesses and organizations.</p>
+    <p class="client-intro" data-lang-es>Software que diseñé y desarrollé para negocios y organizaciones.</p>
+    <p class="client-intro" data-lang-it>Software che ho progettato e sviluppato per attività e organizzazioni.</p>
+    <ul class="client-list">
+      <li>
+        <div class="client-logo"><img src="img/clients/lago-san-agustin.webp" alt="" loading="lazy"></div>
+        <div><div class="client-name">Lago San Agustín</div><div class="client-what"><span data-lang-en>Members, billing and online payments for the club</span><span data-lang-es>Socios, facturación y pagos online del club</span><span data-lang-it>Soci, fatturazione e pagamenti online del club</span></div></div>
+        <a href="https://lagosanagustin.com" target="_blank">lagosanagustin.com →</a>
+      </li>
+      <li>
+        <div class="client-logo"><img src="img/clients/fm-centro.webp" alt="" loading="lazy"></div>
+        <div><div class="client-name">FM Centro Levalle</div><div class="client-what"><span data-lang-en>The radio's website and live streaming</span><span data-lang-es>La web de la radio y su transmisión en vivo</span><span data-lang-it>Il sito della radio e lo streaming in diretta</span></div></div>
+        <a href="https://fmcentrolevalle.com" target="_blank">fmcentrolevalle.com →</a>
+      </li>
+      <li>
+        <div class="client-logo"><img src="img/clients/ilusiones.svg" alt="" loading="lazy"></div>
+        <div><div class="client-name">Ilusiones Levalle</div><div class="client-what"><span data-lang-en>Online store with its own admin panel</span><span data-lang-es>Tienda online con su panel de administración</span><span data-lang-it>Negozio online con il suo pannello di amministrazione</span></div></div>
+        <a href="https://ilusioneslevalle.com" target="_blank">ilusioneslevalle.com →</a>
+      </li>
+      <li>
+        <div class="client-logo"><img src="img/clients/planta-alta.webp" alt="" loading="lazy"></div>
+        <div><div class="client-name">Planta Alta</div><div class="client-what"><span data-lang-en>Online condo management</span><span data-lang-es>Administración de consorcios online</span><span data-lang-it>Gestione condominiale online</span></div></div>
+        <a href="https://plantaalta.net" target="_blank">plantaalta.net →</a>
+      </li>
+    </ul>
   </div>
 </section>
 
@@ -691,10 +837,12 @@
   </div>
 </section>
 
+</main>
+
 <footer>
   <div class="footer-inner">
     <span class="footer-copy">androetto.dev — Pablo Androetto</span>
-    <span class="footer-copy" style="color:var(--border);">Buenos Aires → Italy</span>
+    <span class="footer-copy">Buenos Aires → Italy</span>
   </div>
 </footer>
 
@@ -770,6 +918,25 @@
       b.setAttribute('aria-pressed', active);
     });
   }
+  // ── PROJECT FILTERS ──
+  (function () {
+    var buttons = document.querySelectorAll('.filter-btn');
+    var cards = document.querySelectorAll('.project-card[data-cat]');
+    var status = document.getElementById('filter-status');
+    buttons.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var f = btn.getAttribute('data-filter');
+        var shown = 0;
+        buttons.forEach(function (b) { b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'); });
+        cards.forEach(function (c) {
+          var match = f === 'all' || c.getAttribute('data-cat') === f;
+          c.hidden = !match;
+          if (match) shown++;
+        });
+        if (status) status.textContent = shown + (currentLang === 'es' ? ' proyectos' : currentLang === 'it' ? ' progetti' : ' projects');
+      });
+    });
+  })();
 </script>
 </body>
 </html>
